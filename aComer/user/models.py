@@ -22,6 +22,9 @@ class CustomerAddrress(models.Model):
     state = models.CharField(max_length=50)
     municipality = models.CharField(max_length=50)
 
+    # Relations
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="customerAdresses")
+
     def __str__(self) -> str:
         return f"{self.alias}"
 
@@ -29,6 +32,10 @@ class Review (models.Model):
     """ Customer address """
     title = models.CharField(max_length=50)
     review = models.CharField(max_length=500)
+
+    # Relations
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="reviews")
+    business = models.ForeignKey(fonda.Business, on_delete=models.PROTECT, related_name="reviews")
 
     def __str__(self) -> str:
         return f"{self.title}"
