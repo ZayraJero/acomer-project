@@ -40,10 +40,10 @@ class OrderFood(models.Model):
 
 class Menu(models.Model):
     starter = models.CharField(max_length=100)
-    first_course = starter = models.CharField(max_length=100)
-    main_dish = starter = models.CharField(max_length=100)
-    dessert = starter = models.CharField(max_length=100)
-    drink = starter = models.CharField(max_length=100)
+    first_course = models.CharField(max_length=100)
+    main_dish = models.CharField(max_length=100)
+    dessert = models.CharField(max_length=100)
+    drink = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2, default="5")
 
     #Relations
@@ -65,7 +65,7 @@ class Rating(models.Model):
     #Relations
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="customers")
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="restaurants")
-    
+
 class Item(models.Model):
     item_food = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
