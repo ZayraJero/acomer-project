@@ -10,7 +10,7 @@ class Customer(models.Model):
     email = models.EmailField(unique=True)
 
     def __str__(self) -> str:
-        return f"{self.first_name, self.last_name}"
+        return f"{self.first_name}, {self.last_name}"
 
 class CustomerAddrress(models.Model):
     """ Customer address """
@@ -35,7 +35,7 @@ class Review (models.Model):
 
     # Relations
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="reviews")
-    business = models.ForeignKey(fonda.Business, on_delete=models.PROTECT, related_name="reviews")
+    business = models.ForeignKey(fonda.Business, on_delete=models.PROTECT, related_name="reviews") # Revisar el nombre del modelo en fonda
 
     def __str__(self) -> str:
         return f"{self.title}"
