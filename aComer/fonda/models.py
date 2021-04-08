@@ -15,9 +15,10 @@ class Restaurant(models.Model):
 
 
 
-class Item(models.Model):
+class Platillo(models.Model):
     item_type = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
+    price = models.FloatField(max_length=10)
 
 
 
@@ -31,14 +32,13 @@ class Order(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_TYPES,default="recibido")
    
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="restaurant_addresses")
-    client = models.ForeignKey(umodels.Client,on_delete=models.PROTECT,related_name="clients")
-    item = models.ForeignKey(Item,on_delete=models.PROTECT,related_name="items")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders")
+    client = models.ForeignKey(umodels.Client,on_delete=models.PROTECT,related_name="orders")
 
 
 
 
-class RastaurantAddress(models.Model):
+class RestaurantAddress(models.Model):
     """Info de la direccion del restaurante"""
     status = models.BooleanField(default=False)
     street = models.CharField(max_length=75)
@@ -54,15 +54,14 @@ class RastaurantAddress(models.Model):
 
 class Menu(models.Model):
     """ menu """
-    entrance = models.CharField(max_length=150)
-    first_time = models.CharField(max_length=150)
-    main_course = models.CharField(max_length=150)
-    dessert = models.CharField(max_length=150)
-    drink = models.CharField(max_length=150)
-    cost = models.FloatField()
+    menu_type = models.BooleanField(default=True)
+    price = models.FloatField(max_length=10)
 
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="restaurant_addresses")
-    item = models.ForeignKey(Item,on_delete=models.PROTECT,related_name="items")
-    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name="orders")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus")
 
+class MenuPlatillo(models.Model):
+    #Relations
+    platillo = models.ForeignKey(Platillo, on_delete=models.PROTECT,related_name="menus-platillos")
+    menu = models.ForeignKey(Menu,on_delete=models.PROTECT,related_name="menus-platillos")
+    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name="menus-platillos")

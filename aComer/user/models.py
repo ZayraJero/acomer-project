@@ -17,9 +17,9 @@ class ClientAddress(models.Model):
     int_number = models.IntegerField(max_length=10)
     ext_number = models.IntegerField(max_length=10)
     #Relations
-    client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="clients")
+    client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="client-addresses")
 
-class Ratings(models.Model):
+class Rating(models.Model):
     RATING_TYPES = (
         ("pesimo","Pesimo"),
         ("malo","Malo"),
@@ -31,5 +31,5 @@ class Ratings(models.Model):
     rating = models.CharField(max_length=50,choices=RATING_TYPES,default="muy bueno")
 
     #Relations
-    restaurant = models.ForeignKey(fmodels.Restaurant, on_delete=models.PROTECT, related_name="restaurant_addresses")
-    client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="clients")
+    restaurant = models.ForeignKey(fmodels.Restaurant, on_delete=models.PROTECT, related_name="ratings")
+    client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="ratings")
