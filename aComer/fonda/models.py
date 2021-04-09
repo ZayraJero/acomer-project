@@ -15,10 +15,13 @@ class Restaurant(models.Model):
 
 
 
-class Platillo(models.Model):
+class Plate(models.Model):
     item_type = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     price = models.FloatField(max_length=10)
+
+    def __str__(self) -> str:
+        return f"{self.item_type},{self.name}"
 
 
 
@@ -35,6 +38,8 @@ class Order(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders")
     client = models.ForeignKey(umodels.Client,on_delete=models.PROTECT,related_name="orders")
 
+    def __str__(self) -> str:
+        return f"{self.status}"
 
 
 
@@ -50,7 +55,10 @@ class RestaurantAddress(models.Model):
     zip_code = models.IntegerField(max_length=5)
 
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="restaurant_addresses")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="addresses")
+
+    def __str__(self) -> str:
+        return f"{self.status},{self.street},{self.ext_number},{self.suburb}"
 
 class Menu(models.Model):
     """ menu """
@@ -60,8 +68,11 @@ class Menu(models.Model):
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus")
 
-class MenuPlatillo(models.Model):
+    def __str__(self) -> str:
+        return f"{self.menu_type},{self.price}"
+
+class MenuPlate(models.Model):
     #Relations
-    platillo = models.ForeignKey(Platillo, on_delete=models.PROTECT,related_name="menus-platillos")
-    menu = models.ForeignKey(Menu,on_delete=models.PROTECT,related_name="menus-platillos")
-    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name="menus-platillos")
+    plate = models.ForeignKey(Plate, on_delete=models.PROTECT,related_name="plates")
+    menu = models.ForeignKey(Menu,on_delete=models.PROTECT,related_name="plates")
+    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name="plates")

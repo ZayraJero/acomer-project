@@ -8,6 +8,9 @@ class Client(models.Model):
     phone = models.CharField(max_length=25)
     email = models.EmailField(unique=True)
 
+    def __str__(self) -> str:
+        return f"{self.first_name},{self.last_name}"
+
 class ClientAddress(models.Model):
     alias = models.CharField(max_length=50)
     street = models.CharField(max_length=75)
@@ -18,6 +21,9 @@ class ClientAddress(models.Model):
     ext_number = models.IntegerField(max_length=10)
     #Relations
     client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="client-addresses")
+
+    def __str__(self) -> str:
+        return f"{self.alias},{self.street},{self.ext_number},{self.suburb}"
 
 class Rating(models.Model):
     RATING_TYPES = (
@@ -33,3 +39,6 @@ class Rating(models.Model):
     #Relations
     restaurant = models.ForeignKey(fmodels.Restaurant, on_delete=models.PROTECT, related_name="ratings")
     client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="ratings")
+
+    def __str__(self) -> str:
+        return f"{self.rating}"
