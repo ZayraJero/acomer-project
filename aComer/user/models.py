@@ -20,7 +20,7 @@ class ClientAddress(models.Model):
     int_number = models.IntegerField(max_length=10)
     ext_number = models.IntegerField(max_length=10)
     #Relations
-    client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="client-addresses")
+    client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="addresses")
 
     def __str__(self) -> str:
         return f"{self.alias},{self.street},{self.ext_number},{self.suburb}"

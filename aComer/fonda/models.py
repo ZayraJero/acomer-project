@@ -62,14 +62,16 @@ class RestaurantAddress(models.Model):
 
 class Menu(models.Model):
     """ menu """
-    type = models.BooleanField(default=True)
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+    groupMenu = models.BooleanField(default=True)
     price = models.FloatField(max_length=10)
 
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus")
 
     def __str__(self) -> str:
-        return f"{self.type},{self.price}"
+        return f"{self.groupMenu},{self.price}"
 
 class MenuPlate(models.Model):
     #Relations
