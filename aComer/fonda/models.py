@@ -5,7 +5,7 @@ from aComer.user import models as umodels
 
 class Restaurant(models.Model):
     """Restaurant info"""
-    rest_name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=25)
 
@@ -16,12 +16,12 @@ class Restaurant(models.Model):
 
 
 class Plate(models.Model):
-    item_type = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     price = models.FloatField(max_length=10)
 
     def __str__(self) -> str:
-        return f"{self.item_type},{self.name}"
+        return f"{self.type},{self.name}"
 
 
 
@@ -62,14 +62,14 @@ class RestaurantAddress(models.Model):
 
 class Menu(models.Model):
     """ menu """
-    menu_type = models.BooleanField(default=True)
+    type = models.BooleanField(default=True)
     price = models.FloatField(max_length=10)
 
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus")
 
     def __str__(self) -> str:
-        return f"{self.menu_type},{self.price}"
+        return f"{self.type},{self.price}"
 
 class MenuPlate(models.Model):
     #Relations
