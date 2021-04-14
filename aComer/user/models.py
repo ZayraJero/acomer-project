@@ -7,8 +7,8 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20, unique=True)
-
-def __str__(self):
+    
+    def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
 class CustomerAddress(models.Model):
@@ -19,9 +19,13 @@ class CustomerAddress(models.Model):
     int_num = models.CharField(max_length=5)
     ext_num = models.CharField(max_length=5)
     zip_code = models.CharField(max_length=5)
-
-def __str__(self):
+    
+    def __str__(self):
         return f"{self.alias}"
+    
+    # Relations
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="customerAdresses")
+
 
 class OrderFood(models.Model):
 
@@ -80,8 +84,8 @@ class Item(models.Model):
     name = models.CharField(max_length=100)
 
     #Relations
-    order_food = models.ForeignKey(OrderFood, on_delete=models.PROTECT, related_name="orders")
-    menu = models.ForeignKey(Menu, on_delete=models.PROTECT, related_name="menus")
+    order_food = models.ForeignKey(OrderFood, on_delete=models.PROTECT, related_name="items")
+    menu = models.ForeignKey(Menu, on_delete=models.PROTECT, related_name="items")
 
 
 

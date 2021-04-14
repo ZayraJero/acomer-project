@@ -33,10 +33,10 @@ class OrderFood(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_TYPES, default="recibido")
 
     #Relations
-    item = models.ForeignKey(Item, on_delete=models.PROTECT, related_name="items")
-    menu = models.ForeignKey(Menu, on_delete=models.PROTECT, related_name="menus")
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="customers")
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="restaurants")
+    item = models.ForeignKey(Item, on_delete=models.PROTECT, related_name="orders")
+    menu = models.ForeignKey(Menu, on_delete=models.PROTECT, related_name="orders")
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="orders")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders")
 
 class Menu(models.Model):
     starter = models.CharField(max_length=100)
@@ -47,9 +47,9 @@ class Menu(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default="5")
 
     #Relations
-    order_food = models.ForeignKey(OrderFood, on_delete=models.PROTECT, related_name="orders")
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="restaurants")
-    item = models.ForeignKey(Item, on_delete=models.PROTECT, related_name="items")
+    order_food = models.ForeignKey(OrderFood, on_delete=models.PROTECT, related_name="menus")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus")
+    item = models.ForeignKey(Item, on_delete=models.PROTECT, related_name="menus")
 
 class Rating(models.Model):
     
@@ -63,16 +63,16 @@ class Rating(models.Model):
     rating = models.CharField(max_length=50, choices=STATUS_TYPES, default="recibido")
 
     #Relations
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="customers")
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="restaurants")
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="ratings")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="ratings")
 
 class Item(models.Model):
     item_food = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
 
     #Relations
-    order_food = models.ForeignKey(OrderFood, on_delete=models.PROTECT, related_name="orders")
-    menu = models.ForeignKey(Menu, on_delete=models.PROTECT, related_name="menus")
+    order_food = models.ForeignKey(OrderFood, on_delete=models.PROTECT, related_name="items")
+    menu = models.ForeignKey(Menu, on_delete=models.PROTECT, related_name="items")
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=255)
