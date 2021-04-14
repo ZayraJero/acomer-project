@@ -1,4 +1,5 @@
 from django.db import models
+from fonda import models
 
 # Create your models here.
 
@@ -19,8 +20,8 @@ class CustomerAddrress(models.Model):
     exterior_no = models.CharField(max_length=10)
     interior_no = models.CharField(max_length=10)
     neighborhood = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
     municipality = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
 
     # Relations
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="customerAdresses")
@@ -35,7 +36,7 @@ class Review (models.Model):
 
     # Relations
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="reviews")
-    business = models.ForeignKey(fonda.Business, on_delete=models.PROTECT, related_name="reviews") # Revisar el nombre del modelo en fonda
+    business = models.ForeignKey(fonda.Restaurant, on_delete=models.PROTECT, related_name="reviews")
 
     def __str__(self) -> str:
         return f"{self.title}"
