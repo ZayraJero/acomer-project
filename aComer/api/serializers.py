@@ -95,17 +95,17 @@ class RestaurantAddressesSerializer(serializers.ModelSerializer):
             ]
 
 #foreign restaurant
-class RestaurantOrdersSerializer(serializers.ModelSerializer):
+class RestaurantAddressSerializer(serializers.ModelSerializer):
+    addresses = RestaurantAddressesSerializer(many=True)
     class Meta:
-        street = RestaurantAddressesSerializer()
         model = Restaurant
         fields = [
             "id",
             "name",
             "email",
             "phone",
-            "street",
-            ]
+            "addresses"
+         ]
 #Menu
 
 class MenusListSerializer(serializers.ModelSerializer):

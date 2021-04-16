@@ -18,7 +18,7 @@ from .serializers import (
     #restaurants
     RestaurantListSerializer,
     RestaurantSerializer,
-    RestaurantOrdersSerializer,
+    RestaurantAddressSerializer,
     #plates
     PlateListSerializer,
     PlateSerializer,
@@ -61,9 +61,9 @@ class DeleteRestaurantAPIView(generics.DestroyAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer 
 
-class RetrieveRestaurantOrdersAPIView(generics.RetrieveAPIView):
+class RetrieveRestaurantAddressAPIView(generics.RetrieveAPIView):
     queryset = Restaurant.objects.all()
-    serializer_class = RestaurantOrdersSerializer
+    serializer_class = RestaurantAddressSerializer
 
 
 #PlateView

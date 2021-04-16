@@ -8,7 +8,7 @@ from .views import (
     RetrieveRestaurantAPIView,
     UpdateRestaurantAPIView,
     DeleteRestaurantAPIView,
-    RetrieveRestaurantOrdersAPIView,
+    RetrieveRestaurantAddressAPIView,
     #Plate
     ListPlatesAPIView,
     CreatePlatesAPIView,
@@ -60,7 +60,7 @@ urlpatterns=[
     path("restaurant/<int:pk>/detail/",RetrieveRestaurantAPIView.as_view(),name="detail-restaurants"),
     path("restaurant/<int:pk>/update/",UpdateRestaurantAPIView.as_view(),name="update-restaurants"),
     path("restaurant/<int:pk>/delete/",DeleteRestaurantAPIView.as_view(),name="delete-restaurants"),
-    path("restaurant/<int:pk>/order/",RetrieveRestaurantOrdersAPIView.as_view(),name="detail-restaurantsOrder"),
+    path("restaurant/<int:pk>/address/",RetrieveRestaurantAddressAPIView.as_view(),name="detail-restaurantsOrder"),
     #plate
     path("plate/",ListPlatesAPIView.as_view(),name="list-plate"),
     path("plate/create/",CreatePlatesAPIView.as_view(),name="create-plate"),
