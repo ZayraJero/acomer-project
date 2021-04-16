@@ -1,5 +1,4 @@
 from django.db import models
-from aComer.user import models as umodels
 
 # Create your models fonda here. 
 
@@ -11,7 +10,6 @@ class Restaurant(models.Model):
 
     def __str__(self) -> str:
         return f"{self.rest_name}"
-
 
 
 
@@ -27,16 +25,16 @@ class Plate(models.Model):
 
 class Order(models.Model):
     STATUS_TYPES = (
-        ("recibido, Recibido"),
-        ("preparando, En Preparacion"),
-        ("enviando, En Camino"),
-        ("entregado, Entregado"),
+        ("recibido", "Recibido"),
+        ("preparando", "En Preparacion"),
+        ("enviando", "En Camino"),
+        ("entregado", "Entregado"),
     )
     status = models.CharField(max_length=50, choices=STATUS_TYPES,default="recibido")
    
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders")
-    client = models.ForeignKey(umodels.Client,on_delete=models.PROTECT,related_name="orders")
+    client = models.ForeignKey(to ='user.Client',on_delete=models.PROTECT,related_name="orders")
 
     def __str__(self) -> str:
         return f"{self.status}"
@@ -50,9 +48,9 @@ class RestaurantAddress(models.Model):
     suburb = models.CharField(max_length=100)
     municipality = models.CharField (max_length=50)
     state = models.CharField(max_length=50)
-    int_number = models.IntegerField(max_length=10)
-    ext_number = models.IntegerField(max_length=10)
-    zip_code = models.IntegerField(max_length=5)
+    int_number = models.IntegerField()
+    ext_number = models.IntegerField()
+    zip_code = models.IntegerField()
 
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="addresses")

@@ -1,5 +1,5 @@
 from django.db import models
-from aComer.fonda import models as fmodels
+
 
 # Create your models here.
 class Client(models.Model):
@@ -17,8 +17,8 @@ class ClientAddress(models.Model):
     suburb = models.CharField(max_length=100)
     municipality = models.CharField (max_length=50)
     state = models.CharField(max_length=50)
-    int_number = models.IntegerField(max_length=10)
-    ext_number = models.IntegerField(max_length=10)
+    int_number = models.IntegerField()
+    ext_number = models.IntegerField()
     #Relations
     client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="addresses")
 
@@ -37,8 +37,9 @@ class Rating(models.Model):
     rating = models.CharField(max_length=50,choices=RATING_TYPES,default="muy bueno")
 
     #Relations
-    restaurant = models.ForeignKey(fmodels.Restaurant, on_delete=models.PROTECT, related_name="ratings")
+    restaurant = models.ForeignKey(to='fonda.Restaurant', on_delete=models.PROTECT, related_name="ratings")
     client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="ratings")
 
     def __str__(self) -> str:
         return f"{self.rating}"
+
