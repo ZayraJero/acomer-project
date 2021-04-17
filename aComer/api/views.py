@@ -37,7 +37,9 @@ from .serializers import (
     ClientAddressesListSerializer,
     ClientAddressesSerializer,
     #raitings
-    RaitingsListSerializer
+    RaitingsListSerializer,
+    #menuPlate
+    MenuPlateSerializer,
     )
 
 #RestaurantViews
@@ -135,7 +137,7 @@ class DeleteRestaurantAddressesAPIView(generics.DestroyAPIView):
 
 #Menu
 class ListMenusAPIView(generics.ListAPIView):
-    queryset = RestaurantAddress.objects.all()#.order_by("created_at")
+    queryset = Menu.objects.all()#.order_by("created_at")
     serializer_class = MenusSerializer
 
 class CreateMenusAPIView(generics.CreateAPIView):
@@ -219,3 +221,25 @@ class UpdateRatingsAPIView(generics.UpdateAPIView):
 class DeleteRatingsAPIView(generics.DestroyAPIView):
     queryset = Rating.objects.all()
     serializer_class = RaitingsListSerializer
+
+#menuPLate
+
+class ListMenuPlateAPIView(generics.ListAPIView):
+    queryset = MenuPlate.objects.all()#.order_by("created_at")
+    serializer_class = MenuPlateSerializer
+
+class CreateMenuPlateAPIView(generics.CreateAPIView):
+    queryset = MenuPlate.objects.all()
+    serializer_class = MenuPlateSerializer
+
+class RetrieveMenuPlateAPIView(generics.RetrieveAPIView):
+    queryset = MenuPlate.objects.all()
+    serializer_class = MenuPlateSerializer
+
+class UpdateMenuPlateAPIView(generics.UpdateAPIView):
+    queryset = MenuPlate.objects.all()
+    serializer_class = MenuPlateSerializer
+
+class DeleteMenuPlateAPIView(generics.DestroyAPIView):
+    queryset = MenuPlate.objects.all()
+    serializer_class = MenuPlateSerializer

@@ -51,6 +51,12 @@ from .views import (
     RetrieveRatingsAPIView,
     UpdateRatingsAPIView,
     DeleteRatingsAPIView,
+    #platillo
+    ListMenuPlateAPIView,
+    CreateMenuPlateAPIView,
+    RetrieveMenuPlateAPIView,
+    UpdateMenuPlateAPIView,
+    DeleteMenuPlateAPIView,
     )
 
 urlpatterns=[
@@ -103,6 +109,11 @@ urlpatterns=[
     path("rating/<int:pk>/detail/",RetrieveRatingsAPIView.as_view(),name="detail-rating"),
     path("rating/<int:pk>/update/",UpdateRatingsAPIView.as_view(),name="update-rating"),
     path("rating/<int:pk>/delete/",DeleteRatingsAPIView.as_view(),name="delete-rating"),
-
+    #menu-plate
+    path("platillo/",ListMenuPlateAPIView.as_view(),name="list-platillo"),
+    path("platillo/create/",CreateMenuPlateAPIView.as_view(),name="create-platillo"),
+    path("platillo/<int:pk>/detail/",RetrieveMenuPlateAPIView.as_view(),name="detail-platillo"),
+    path("platillo/<int:pk>/update/",UpdateMenuPlateAPIView.as_view(),name="update-platillo"),
+    path("platillo/<int:pk>/delete/",DeleteMenuPlateAPIView.as_view(),name="delete-platillo"),
 
 ]

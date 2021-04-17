@@ -11,12 +11,23 @@ class Restaurant(models.Model):
     phone = models.CharField(max_length=25)
 
     def __str__(self) -> str:
-        return f"{self.rest_name}"
+        return f"{self.name}"
 
 
 
 class Plate(models.Model):
-    type = models.CharField(max_length=100)
+    STATUS_TYPES = (
+        ("primer tiempo", "Primer Tiempo "),
+        ("segundo tiempo", "Segundo Tiempo"),
+        ("tercer tiempo", "Tercer Tiempo"),
+        ("cuarto tiempo", "Cuarto Tiempo"),
+        ("bebidas", "Bebidas"),
+        ("Complementos", "Complementos"),
+        ("ingredientes extras", "Ingredientes Extras"),
+        ("tacos", "Tacos"),
+        ("snack", "Snack"),
+    )
+    type = models.CharField(max_length=100, choices =STATUS_TYPES, default="primer tiempo")
     name = models.CharField(max_length=100)
     price = models.FloatField(max_length=10)
 
@@ -50,9 +61,9 @@ class RestaurantAddress(models.Model):
     suburb = models.CharField(max_length=100)
     municipality = models.CharField (max_length=50)
     state = models.CharField(max_length=50)
-    int_number = models.IntegerField()
-    ext_number = models.IntegerField()
-    zip_code = models.IntegerField()
+    int_number = models.CharField(max_length=10)
+    ext_number = models.CharField(max_length=10)
+    zip_code = models.CharField(max_length=10)
 
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="addresses")

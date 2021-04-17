@@ -1,7 +1,9 @@
+from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
 from fonda.models import (
     Menu,
+    MenuPlate,
     Order,
     Plate,
     Restaurant,
@@ -62,31 +64,32 @@ class PlateSerializer(serializers.ModelSerializer):
 class OrderListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = [
-            "status",
-            ]
+        fields = "__all__"
 
 
 
 #restaurantAddresses
 class RestaurantAddressesListSerializer(serializers.ModelSerializer):
+    # restaurant = RestaurantListSerializer()
     class Meta:
         model = RestaurantAddress
-        fields = [
-            "status",
-            "street",
-            "suburb",
-            "municipality",
-            "state",
-            "int_number",
-            "ext_number",
-            "zip_code",
-            ]
+        fields = "__all__"
+    # def create(self, validated_data):
+    #     restaurantId = self.validated_data.pop("restaurant")
+    #     restaurant = Restaurant.objects.create(**restaurantId)
+    #     validated_data.pop("restaurant")
+    #     restaurantAddress= RestaurantAddress.objects.create(restaurant = restaurant,**validated_data)
+    #     print(validated_data)
+    #     return restaurantAddress
+
+
+        
 
 class RestaurantAddressesSerializer(serializers.ModelSerializer):
     class Meta:
         model = RestaurantAddress
         fields = [
+            "id",
             "street",
             "suburb",
             "municipality",
@@ -111,12 +114,7 @@ class RestaurantAddressSerializer(serializers.ModelSerializer):
 class MenusListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
-        fields = [
-            "title",
-            "description",
-            "groupMenu",
-            "price",
-            ]
+        fields = "__all__"
 
 
 class MenusSerializer(serializers.ModelSerializer):
@@ -154,15 +152,7 @@ class ClientsSerializer(serializers.ModelSerializer):
 class ClientAddressesListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientAddress
-        fields = [
-            "id",
-            "alias",
-            "suburb",
-            "municipality",
-            "state",
-            "int_number",
-            "ext_number",
-            ]
+        fields = "__all__"
 
 class ClientAddressesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -180,7 +170,11 @@ class ClientAddressesSerializer(serializers.ModelSerializer):
 class RaitingsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
-        fields = [
-            "rating"
-            ]
+        fields = "__all__"
+
+#menu plate
+class MenuPlateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuPlate
+        fields = "__all__"
 
