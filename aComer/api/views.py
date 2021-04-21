@@ -19,13 +19,16 @@ from .serializers import (
     RestaurantListSerializer,
     RestaurantSerializer,
     RestaurantAddressSerializer,
+    RestaurantOrderSerializer,
+    RestaurantMenuSerializer,
+    RestaurantPlatesSerializer,
     #plates
     PlateListSerializer,
     PlateSerializer,
     #orders
     OrderListSerializer,
     #restaurant addresses
-    RestaurantAddressesListSerializer,
+    RestaurantCreateSerializer,
     RestaurantAddressesSerializer,
     #menu
     MenusListSerializer,
@@ -57,15 +60,31 @@ class RetrieveRestaurantAPIView(generics.RetrieveAPIView):
 
 class UpdateRestaurantAPIView(generics.UpdateAPIView):
     queryset = Restaurant.objects.all()
-    serializer_class = RestaurantListSerializer
+    serializer_class = RestaurantCreateSerializer
 
 class DeleteRestaurantAPIView(generics.DestroyAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer 
 
+####
+
 class RetrieveRestaurantAddressAPIView(generics.RetrieveAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantAddressSerializer
+
+class RetrieveRestaurantOrdersAPIView(generics.RetrieveAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantOrderSerializer
+
+
+class RetrieveRestaurantMenusAPIView(generics.RetrieveAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantMenuSerializer
+
+
+class RetrieveRestaurantPlatesAPIView(generics.RetrieveAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantPlatesSerializer
 
 
 #PlateView
@@ -120,11 +139,15 @@ class ListRestaurantAddressesAPIView(generics.ListAPIView):
 
 class CreateRestaurantAddressesAPIView(generics.CreateAPIView):
     queryset = RestaurantAddress.objects.all()
-    serializer_class = RestaurantAddressesListSerializer
+    serializer_class = RestaurantCreateSerializer
+
+class CreateRestAddressesAPIView(generics.CreateAPIView):
+    queryset = RestaurantAddress.objects.all()
+    serializer_class = RestaurantAddressSerializer
 
 class RetrieveRestaurantAddressesAPIView(generics.RetrieveAPIView):
     queryset = RestaurantAddress.objects.all()
-    serializer_class = RestaurantAddressesListSerializer
+    serializer_class = RestaurantListSerializer
 
 class UpdateRestaurantAddressesAPIView(generics.UpdateAPIView):
     queryset = RestaurantAddress.objects.all()

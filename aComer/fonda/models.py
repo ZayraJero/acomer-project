@@ -17,19 +17,20 @@ class Restaurant(models.Model):
 
 class Plate(models.Model):
     STATUS_TYPES = (
-        ("primer tiempo", "Primer Tiempo "),
-        ("segundo tiempo", "Segundo Tiempo"),
-        ("tercer tiempo", "Tercer Tiempo"),
-        ("cuarto tiempo", "Cuarto Tiempo"),
+        ("primer_tiempo", "Primer Tiempo "),
+        ("segundo_tiempo", "Segundo Tiempo"),
+        ("tercer_tiempo", "Tercer Tiempo"),
+        ("cuarto_tiempo", "Cuarto Tiempo"),
         ("bebidas", "Bebidas"),
         ("Complementos", "Complementos"),
-        ("ingredientes extras", "Ingredientes Extras"),
+        ("ingredientes_extras", "Ingredientes Extras"),
         ("tacos", "Tacos"),
         ("snack", "Snack"),
     )
     type = models.CharField(max_length=100, choices =STATUS_TYPES, default="primer tiempo")
     name = models.CharField(max_length=100)
     price = models.FloatField(max_length=10)
+    image = models.ImageField(upload_to = "plate_images")
 
     def __str__(self) -> str:
         return f"{self.type},{self.name}"
@@ -66,7 +67,7 @@ class RestaurantAddress(models.Model):
     zip_code = models.CharField(max_length=10)
 
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="addresses")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="addresses", null=True)
 
     def __str__(self) -> str:
         return f"{self.status},{self.street},{self.ext_number},{self.suburb}"
@@ -77,6 +78,7 @@ class Menu(models.Model):
     description = models.CharField(max_length=200)
     groupMenu = models.BooleanField(default=True)
     price = models.FloatField(max_length=10)
+    image = models.ImageField(upload_to = "menu_images")
 
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus")

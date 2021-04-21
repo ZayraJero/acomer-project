@@ -9,6 +9,10 @@ from .views import (
     UpdateRestaurantAPIView,
     DeleteRestaurantAPIView,
     RetrieveRestaurantAddressAPIView,
+    RetrieveRestaurantOrdersAPIView,
+    RetrieveRestaurantMenusAPIView,
+    RetrieveRestaurantPlatesAPIView,
+
     #Plate
     ListPlatesAPIView,
     CreatePlatesAPIView,
@@ -24,6 +28,7 @@ from .views import (
     #restaurant addreses
     ListRestaurantAddressesAPIView,
     CreateRestaurantAddressesAPIView,
+    CreateRestAddressesAPIView,
     RetrieveRestaurantAddressesAPIView,
     UpdateRestaurantAddressesAPIView,
     DeleteRestaurantAddressesAPIView,
@@ -62,11 +67,16 @@ from .views import (
 urlpatterns=[
     #Restaurant
     path("restaurant/",ListRestaurantsAPIView.as_view(),name="list-restaurants"),
-    path("restaurant/create/",CreateRestaurantAPIView.as_view(),name="create-restaurants"),
+    path("restaurant/create/",CreateRestaurantAddressesAPIView.as_view(),name="create-raddress"),
+    #path("restaurant/create/",CreateRestaurantAddressesAPIView.as_view(),name="create-restaurants"),
     path("restaurant/<int:pk>/detail/",RetrieveRestaurantAPIView.as_view(),name="detail-restaurants"),
     path("restaurant/<int:pk>/update/",UpdateRestaurantAPIView.as_view(),name="update-restaurants"),
     path("restaurant/<int:pk>/delete/",DeleteRestaurantAPIView.as_view(),name="delete-restaurants"),
-    path("restaurant/<int:pk>/address/",RetrieveRestaurantAddressAPIView.as_view(),name="detail-restaurantsOrder"),
+    ####
+    path("restaurant/<int:pk>/address/",RetrieveRestaurantAddressAPIView.as_view(),name="detail-restaurantsAddress"),
+    path("restaurant/<int:pk>/orders/",RetrieveRestaurantOrdersAPIView.as_view(),name="detail-restaurantsOrders"),
+    path("restaurant/<int:pk>/menus/",RetrieveRestaurantMenusAPIView.as_view(),name="detail-restaurantsMenus"),
+    path("restaurant/<int:pk>/plates/",RetrieveRestaurantPlatesAPIView.as_view(),name="detail-restaurantsplates"),
     #plate
     path("plate/",ListPlatesAPIView.as_view(),name="list-plate"),
     path("plate/create/",CreatePlatesAPIView.as_view(),name="create-plate"),
@@ -81,7 +91,7 @@ urlpatterns=[
     path("order/<int:pk>/delete/",DeleteOrdersAPIView.as_view(),name="delete-plate"),
     #restaurantaddres
     path("raddress/",ListRestaurantAddressesAPIView.as_view(),name="list-raddress"),
-    path("raddress/create/",CreateRestaurantAddressesAPIView.as_view(),name="create-raddress"),
+    path("raddress/create/",CreateRestAddressesAPIView.as_view(),name="create-raddress"),
     path("raddress/<int:pk>/detail/",RetrieveRestaurantAddressesAPIView.as_view(),name="detail-raddress"),
     path("raddress/<int:pk>/update/",UpdateRestaurantAddressesAPIView.as_view(),name="update-raddress"),
     path("raddress/<int:pk>/delete/",DeleteRestaurantAddressesAPIView.as_view(),name="delete-raddress"),
