@@ -42,6 +42,8 @@ from .views import (
     RetrieveClientsAPIView,
     UpdateClientsAPIView,
     DeleteClientsAPIView,
+    ClientAddressAPIView,
+    ClientOrdersAPIView,
     #client addresses
     ListAddressesAPIView,
     CreateAddressesAPIView,
@@ -88,7 +90,7 @@ urlpatterns=[
     path("order/<int:pk>/update/",UpdateOrdersAPIView.as_view(),name="update-plate"),
     path("order/<int:pk>/delete/",DeleteOrdersAPIView.as_view(),name="delete-plate"),
     #restaurantaddres
-    path("raddress/",ListRestaurantAddressesAPIView.as_view(),name="list-raddress"), ##no required
+    path("raddress/",ListRestaurantAddressesAPIView.as_view(),name="list-raddress"),
     path("raddress/create/",CreateRestAddressesAPIView.as_view(),name="create-raddress"),
     path("raddress/<int:pk>/detail/",RetrieveRestaurantAddressesAPIView.as_view(),name="detail-raddress"),
     path("raddress/<int:pk>/update/",RetrieveUpdateRestaurantAddressesAPIView.as_view(),name="update-raddress"),
@@ -101,11 +103,12 @@ urlpatterns=[
     path("menu/<int:pk>/delete/",DeleteMenusAPIView.as_view(),name="delete-menu"),
     #client
     path("client/",ListClientsAPIView.as_view(),name="list-client"),
-    path("client/create/",CreateClientsAPIView.as_view(),name="create-client"),
+    path("client/create/",CreateClientsAPIView.as_view(),name="create-client"),#crear con address
     path("client/<int:pk>/detail/",RetrieveClientsAPIView.as_view(),name="detail-client"),
     path("client/<int:pk>/update/",UpdateClientsAPIView.as_view(),name="update-client"),
     path("client/<int:pk>/delete/",DeleteClientsAPIView.as_view(),name="delete-client"),
-        ##faltan client addres y client orders
+    path("client/<int:pk>/address/",ClientAddressAPIView.as_view(),name="retrieve-client-address"),
+    path("client/<int:pk>/order/",ClientOrdersAPIView.as_view(),name="retrieve-client-order"),
     #client address
     path("address/",ListAddressesAPIView.as_view(),name="list-address"),
     path("address/create/",CreateAddressesAPIView.as_view(),name="create-address"),

@@ -38,6 +38,7 @@ from .serializers import (
     #client
     ClientsListSerializer,
     ClientsSerializer,
+    ClientAddressListSerializer,
     #client addresses
     ClientAddressesListSerializer,
     ClientAddressesSerializer,
@@ -202,6 +203,14 @@ class UpdateClientsAPIView(generics.UpdateAPIView):
 class DeleteClientsAPIView(generics.DestroyAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientsSerializer
+
+class ClientAddressAPIView(generics.RetrieveAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientAddressListSerializer
+
+class ClientOrdersAPIView(generics.RetrieveAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientAddressListSerializer
 
 #client address
 
