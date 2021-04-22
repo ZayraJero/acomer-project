@@ -22,6 +22,8 @@ from .serializers import (
     RestaurantOrderSerializer,
     RestaurantMenuSerializer,
     RestaurantPlatesSerializer,
+    RestaurantAddressListSerializer,
+    RestaurantAddressListsSerializer,
     #plates
     PlateListSerializer,
     PlateSerializer,
@@ -70,7 +72,7 @@ class DeleteRestaurantAPIView(generics.DestroyAPIView):
 
 class RetrieveRestaurantAddressAPIView(generics.RetrieveAPIView):
     queryset = Restaurant.objects.all()
-    serializer_class = RestaurantAddressSerializer
+    serializer_class = RestaurantAddressListSerializer
 
 class RetrieveRestaurantOrdersAPIView(generics.RetrieveAPIView):
     queryset = Restaurant.objects.all()
@@ -135,7 +137,7 @@ class DeleteOrdersAPIView(generics.DestroyAPIView):
 
 class ListRestaurantAddressesAPIView(generics.ListAPIView):
     queryset = RestaurantAddress.objects.all()#.order_by("created_at")
-    serializer_class = RestaurantAddressesSerializer
+    serializer_class = RestaurantAddressListsSerializer
 
 class CreateRestaurantAddressesAPIView(generics.CreateAPIView):
     queryset = RestaurantAddress.objects.all()
@@ -147,13 +149,13 @@ class CreateRestAddressesAPIView(generics.CreateAPIView):
 
 class RetrieveRestaurantAddressesAPIView(generics.RetrieveAPIView):
     queryset = RestaurantAddress.objects.all()
-    serializer_class = RestaurantListSerializer
+    serializer_class = RestaurantAddressesSerializer
 
-class UpdateRestaurantAddressesAPIView(generics.UpdateAPIView):
+class RetrieveUpdateRestaurantAddressesAPIView(generics.RetrieveUpdateAPIView):
     queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
-class DeleteRestaurantAddressesAPIView(generics.DestroyAPIView):
+class RetrieveDeleteRestaurantAddressesAPIView(generics.RetrieveDestroyAPIView):
     queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
@@ -195,7 +197,7 @@ class RetrieveClientsAPIView(generics.RetrieveAPIView):
 
 class UpdateClientsAPIView(generics.UpdateAPIView):
     queryset = Client.objects.all()
-    serializer_class = ClientsSerializer
+    serializer_class = ClientsListSerializer
 
 class DeleteClientsAPIView(generics.DestroyAPIView):
     queryset = Client.objects.all()
@@ -215,13 +217,14 @@ class RetrieveAddressesAPIView(generics.RetrieveAPIView):
     queryset = ClientAddress.objects.all()
     serializer_class = ClientAddressesListSerializer
 
-class UpdateAddressesAPIView(generics.UpdateAPIView):
+
+class RetrieveDeleteAddressesAPIView(generics.RetrieveDestroyAPIView):
     queryset = ClientAddress.objects.all()
     serializer_class = ClientAddressesListSerializer
 
-class DeleteAddressesAPIView(generics.DestroyAPIView):
+class RetrieveUpdateAddressesAPIView(generics.RetrieveUpdateAPIView):
     queryset = ClientAddress.objects.all()
-    serializer_class = ClientAddressesSerializer
+    serializer_class = ClientAddressesListSerializer
 
 #ratings
 

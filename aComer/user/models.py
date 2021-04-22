@@ -20,7 +20,7 @@ class ClientAddress(models.Model):
     int_number = models.IntegerField()
     ext_number = models.IntegerField()
     #Relations
-    client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="addresses")
+    client = models.ForeignKey(Client,on_delete=models.CASCADE,related_name="addresses")
 
     def __str__(self) -> str:
         return f"{self.alias},{self.street},{self.ext_number},{self.suburb}"
@@ -38,7 +38,7 @@ class Rating(models.Model):
 
     #Relations
     restaurant = models.ForeignKey(to='fonda.Restaurant', on_delete=models.PROTECT, related_name="ratings")
-    client = models.ForeignKey(Client,on_delete=models.PROTECT,related_name="ratings")
+    client = models.ForeignKey(Client,on_delete=models.CASCADE,related_name="ratings")
 
     def __str__(self) -> str:
         return f"{self.rating}"

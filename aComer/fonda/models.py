@@ -67,7 +67,7 @@ class RestaurantAddress(models.Model):
     zip_code = models.CharField(max_length=10)
 
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="addresses", null=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="addresses", null=True)
 
     def __str__(self) -> str:
         return f"{self.status},{self.street},{self.ext_number},{self.suburb}"
