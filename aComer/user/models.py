@@ -1,9 +1,4 @@
 from django.db import models
-<<<<<<< HEAD
-from fonda import models as fmodels
-=======
-
->>>>>>> d2da703f3794b3b644012cb1a32f79f4aeeec93a
 
 # Create your models here.
 class Client(models.Model):
@@ -23,8 +18,10 @@ class ClientAddress(models.Model):
     state = models.CharField(max_length=50)
     int_number = models.IntegerField()
     ext_number = models.IntegerField()
+    zip_code = models.IntegerField()
+    references = models.CharField(max_length=250)
     #Relations
-    client = models.ForeignKey(Client,on_delete=models.CASCADE,related_name="addresses")
+    client = models.ForeignKey(Client,on_delete=models.CASCADE,related_name="addresses", null=True)
 
     def __str__(self) -> str:
         return f"{self.alias},{self.street},{self.ext_number},{self.suburb}"
@@ -41,8 +38,8 @@ class Rating(models.Model):
     rating = models.CharField(max_length=50,choices=RATING_TYPES,default="muy bueno")
 
     #Relations
-    restaurant = models.ForeignKey(to='fonda.Restaurant', on_delete=models.PROTECT, related_name="ratings")
-    client = models.ForeignKey(Client,on_delete=models.CASCADE,related_name="ratings")
+    restaurant = models.ForeignKey(to='fonda.Restaurant', on_delete=models.PROTECT, related_name="ratings",null=True)
+    client = models.ForeignKey(Client,on_delete=models.CASCADE,related_name="ratings",null=True)
 
     def __str__(self) -> str:
         return f"{self.rating}"

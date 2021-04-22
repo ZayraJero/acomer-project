@@ -39,11 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< HEAD
-    #Custom Apps
-    'fonda',
-    'user',
-=======
     #custom apps
     'user',
     'fonda',
@@ -52,7 +47,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'crispy_forms',
     'corsheaders',
->>>>>>> d2da703f3794b3b644012cb1a32f79f4aeeec93a
 ]
 
 MIDDLEWARE = [
@@ -92,21 +86,12 @@ WSGI_APPLICATION = 'aComer.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-<<<<<<< HEAD
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "acomer",
-        "USER": "admin",
-        "PASSWORD": "123456",
-        "HOST": "localhost",
-=======
     'default': {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "acomer",
         "USER": "admin_acomer",
         "PASSWORD": "acomer123",
         "HOST": "database-1.cbrynrrwsoof.us-east-2.rds.amazonaws.com",
->>>>>>> d2da703f3794b3b644012cb1a32f79f4aeeec93a
         "PORT": "5432",
     }
 }

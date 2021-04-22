@@ -285,3 +285,28 @@ class RestaurantAddressListsSerializer(serializers.ModelSerializer):
             "suburb",
             "restaurant",
             ]
+
+
+class ClientAddressListSerializer(serializers.ModelSerializer):
+    addresses =ClientAddressesListSerializer(many=True)
+    class Meta:
+        model = Client
+        fields = [
+            "first_name",
+            "last_name",
+            "phone",
+            "email",
+            "addresses"
+            ]
+
+class ClientAddressListSerializer(serializers.ModelSerializer):
+    orders =OrderListSerializer(many=True)
+    class Meta:
+        model = Client
+        fields = [
+            "first_name",
+            "last_name",
+            "phone",
+            "email",
+            "orders"
+            ]
