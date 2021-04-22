@@ -1,84 +1,93 @@
-from django.db import models
+from user import models as umodels
 
-# Create your models here.
+
+# Create your models fonda here. 
 
 class Restaurant(models.Model):
-    rest_name = models.CharField(max_length=255)
+    """Restaurant info"""
+    name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=20, unique=True)
+    phone = models.CharField(max_length=25)
 
-def __str__(self):
-        return f"{self.rest_name} {self.phone}"
-    
-    #Relations
-    rest_address = models.ForeignKey(RestaurantAddress, on_delete=models.PROTECT, related_name="restaurants")
+    def __str__(self) -> str:
+        return f"{self.name}"
 
-class RestaurantAddress(models.Model):
-    status = models.BooleanField(default=False)
-    address = models.TextField(max_length=100)
-    neighborhood = models.CharField(max_length=50)
-    delegation = models.CharField(max_length=50)
-    int_num = models.CharField(max_length=5)
-    ext_num = models.CharField(max_length=5)
-    zip_code = models.CharField(max_length=5)
 
-class OrderFood(models.Model):
 
+class Plate(models.Model):
+    STATUS_TYPES = (
+        ("primer_tiempo", "Primer Tiempo "),
+        ("segundo_tiempo", "Segundo Tiempo"),
+        ("tercer_tiempo", "Tercer Tiempo"),
+        ("cuarto_tiempo", "Cuarto Tiempo"),
+        ("bebidas", "Bebidas"),
+        ("Complementos", "Complementos"),
+        ("ingredientes_extras", "Ingredientes Extras"),
+        ("tacos", "Tacos"),
+        ("snack", "Snack"),
+    )
+    type = models.CharField(max_length=100, choices =STATUS_TYPES, default="primer tiempo")
+    name = models.CharField(max_length=100)
+    price = models.FloatField(max_length=10)
+    image = models.ImageField(upload_to = "plate_images")
+
+    def __str__(self) -> str:
+        return f"{self.type},{self.name}"
+
+
+
+class Order(models.Model):
     STATUS_TYPES = (
         ("recibido", "Recibido"),
-        ("preparando", "En preparación"),
-        ("enviado", "En camino"),
+        ("preparando", "En Preparacion"),
+        ("enviando", "En Camino"),
         ("entregado", "Entregado"),
     )
-    status = models.CharField(max_length=50, choices=STATUS_TYPES, default="recibido")
+    status = models.CharField(max_length=50, choices=STATUS_TYPES,default="recibido")
+   
+    #Relations
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders")
+    client = models.ForeignKey(to ='user.Client',on_delete=models.PROTECT,related_name="orders")
+
+    def __str__(self) -> str:
+        return f"{self.status}"
+
+
+
+class RestaurantAddress(models.Model):
+    """Info de la direccion del restaurante"""
+    status = models.BooleanField(default=False)
+    street = models.CharField(max_length=75)
+    suburb = models.CharField(max_length=100)
+    municipality = models.CharField (max_length=50)
+    state = models.CharField(max_length=50)
+    int_number = models.CharField(max_length=10)
+    ext_number = models.CharField(max_length=10)
+    zip_code = models.CharField(max_length=10)
 
     #Relations
-    item = models.ForeignKey(Item, on_delete=models.PROTECT, related_name="orders")
-    menu = models.ForeignKey(Menu, on_delete=models.PROTECT, related_name="orders")
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="orders")
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="addresses", null=True)
+
+    def __str__(self) -> str:
+        return f"{self.status},{self.street},{self.ext_number},{self.suburb}"
 
 class Menu(models.Model):
-    starter = models.CharField(max_length=100)
-    first_course = models.CharField(max_length=100)
-    main_dish = models.CharField(max_length=100)
-    dessert = models.CharField(max_length=100)
-    drink = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default="5")
+    """ menu """
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+    groupMenu = models.BooleanField(default=True)
+    price = models.FloatField(max_length=10)
+    image = models.ImageField(upload_to = "menu_images")
 
     #Relations
-    order_food = models.ForeignKey(OrderFood, on_delete=models.PROTECT, related_name="menus")
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus")
-    item = models.ForeignKey(Item, on_delete=models.PROTECT, related_name="menus")
 
-class Rating(models.Model):
-    
-    RATING_TYPES = (
-        ("muy mala", "Muy mala"),
-        ("mala", "Mala"),
-        ("buena", "Buena"),
-        ("muy buena", "Muy buena"),
-        ("perfecta", "Perfecta"),
-    )
-    rating = models.CharField(max_length=50, choices=STATUS_TYPES, default="recibido")
+    def __str__(self) -> str:
+        return f"{self.groupMenu},{self.price}"
 
+class MenuPlate(models.Model):
     #Relations
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name="ratings")
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="ratings")
+    plate = models.ForeignKey(Plate, on_delete=models.PROTECT,related_name="plates")
+    menu = models.ForeignKey(Menu,on_delete=models.PROTECT,related_name="plates")
+    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name="plates")
 
-class Item(models.Model):
-    item_food = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-
-    #Relations
-    order_food = models.ForeignKey(OrderFood, on_delete=models.PROTECT, related_name="items")
-    menu = models.ForeignKey(Menu, on_delete=models.PROTECT, related_name="items")
-
-class Customer(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=20, unique=True)
-
-def __str__(self):
-        return f"{self.first_name} {self.last_name}"
