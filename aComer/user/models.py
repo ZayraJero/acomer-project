@@ -1,5 +1,5 @@
 from django.db import models
-from aComer.fonda import models as fmodels
+from fonda import models as fmodels
 
 # Create your models here.
 class Client(models.Model):

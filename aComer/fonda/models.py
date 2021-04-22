@@ -1,5 +1,5 @@
 from django.db import models
-from aComer.user import models as umodels
+from user import models as umodels
 
 # Create your models fonda here. 
 
