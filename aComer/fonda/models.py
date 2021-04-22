@@ -1,4 +1,6 @@
-from user import models as umodels
+from django.db import models
+from django.utils import tree
+
 
 
 # Create your models fonda here. 
@@ -43,11 +45,11 @@ class Order(models.Model):
         ("enviando", "En Camino"),
         ("entregado", "Entregado"),
     )
-    status = models.CharField(max_length=50, choices=STATUS_TYPES,default="recibido")
+    status = models.CharField(max_length=50, choices=STATUS_TYPES,default="recibido",null=True)
    
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders")
-    client = models.ForeignKey(to ='user.Client',on_delete=models.PROTECT,related_name="orders")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders",null=True)
+    client = models.ForeignKey(to ='user.Client',on_delete=models.PROTECT,related_name="orders",null=True)
 
     def __str__(self) -> str:
         return f"{self.status}"
@@ -80,14 +82,13 @@ class Menu(models.Model):
     image = models.ImageField(upload_to = "menu_images")
 
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus",null=True)
 
     def __str__(self) -> str:
         return f"{self.groupMenu},{self.price}"
 
 class MenuPlate(models.Model):
     #Relations
-    plate = models.ForeignKey(Plate, on_delete=models.PROTECT,related_name="plates")
-    menu = models.ForeignKey(Menu,on_delete=models.PROTECT,related_name="plates")
-    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name="plates")
-
+    plate = models.ForeignKey(Plate, on_delete=models.PROTECT,related_name="plates",null=True)
+    menu = models.ForeignKey(Menu,on_delete=models.PROTECT,related_name="plates",null=True)
+    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name="plates",null=True)
