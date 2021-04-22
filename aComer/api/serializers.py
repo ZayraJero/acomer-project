@@ -78,7 +78,7 @@ class RestaurantAddressesSerializer(serializers.ModelSerializer):
             "street",
             "suburb",
             "municipality",
-            "state",
+            "link_google",
             "int_number",
             "ext_number",
             "zip_code",
@@ -95,7 +95,7 @@ class RestaurantAddressSerializer(serializers.ModelSerializer):
             "street",
             "suburb",
             "municipality",
-            "state",
+            "link_google",
             "int_number",
             "ext_number",
             "zip_code",
@@ -299,8 +299,21 @@ class ClientAddressListSerializer(serializers.ModelSerializer):
             "addresses"
             ]
 
-class ClientAddressListSerializer(serializers.ModelSerializer):
-    orders =OrderListSerializer(many=True)
+# class ClientAddressListSerializer(serializers.ModelSerializer):
+#     orders =OrderListSerializer(many=True)
+#     class Meta:
+#         model = Client
+#         fields = [
+#             "first_name",
+#             "last_name",
+#             "phone",
+#             "email",
+#             "orders"
+#             ]
+
+
+class ClientCreateSerializer(serializers.ModelSerializer):#restaurant create
+    addresses = ClientAddressesListSerializer(many=True)
     class Meta:
         model = Client
         fields = [
@@ -308,5 +321,28 @@ class ClientAddressListSerializer(serializers.ModelSerializer):
             "last_name",
             "phone",
             "email",
-            "orders"
-            ]
+            "addresses",
+        ]
+        
+    def create(self, validated_data):
+        clientId = self.validated_data.pop("addresses")
+        validated_data.pop("addresses")
+        array_forms = []
+        for client_Id in clientId:
+          form = ClientAddress.objects.create(**client_Id)
+          array_forms.append(form)
+        client = Client.objects.create(**validated_data)
+        client.addresses.set(array_forms)
+        return client
+
+
+    def update(self, instance, validated_data):
+        clients_id = self.validated_data.pop("addresses")
+        client_viejo = list(ClientAddress.objects.filter(client_id=instance.id))
+        for address in range(len(clients_id)):
+            address_nuevo = super().update(client_viejo[address], clients_id[address])
+        validated_data.pop("addresses")
+        instance = super().update(instance, validated_data)
+        client = super(RestaurantCreateSerializer, self).update(instance, validated_data)
+        client.save()
+        return client
