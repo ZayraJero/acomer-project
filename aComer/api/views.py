@@ -39,6 +39,7 @@ from .serializers import (
     ClientsListSerializer,
     ClientsSerializer,
     ClientAddressListSerializer,
+    ClientCreateSerializer,
     #client addresses
     ClientAddressesListSerializer,
     ClientAddressesSerializer,
@@ -68,6 +69,10 @@ class UpdateRestaurantAPIView(generics.UpdateAPIView):
 class DeleteRestaurantAPIView(generics.DestroyAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer 
+
+class CreateRestaurantAddressesAPIView(generics.CreateAPIView):
+    queryset = RestaurantAddress.objects.all()
+    serializer_class = RestaurantCreateSerializer
 
 ####
 
@@ -140,9 +145,7 @@ class ListRestaurantAddressesAPIView(generics.ListAPIView):
     queryset = RestaurantAddress.objects.all()#.order_by("created_at")
     serializer_class = RestaurantAddressListsSerializer
 
-class CreateRestaurantAddressesAPIView(generics.CreateAPIView):
-    queryset = RestaurantAddress.objects.all()
-    serializer_class = RestaurantCreateSerializer
+
 
 class CreateRestAddressesAPIView(generics.CreateAPIView):
     queryset = RestaurantAddress.objects.all()
@@ -188,9 +191,9 @@ class ListClientsAPIView(generics.ListAPIView):
     queryset = Client.objects.all()#.order_by("created_at")
     serializer_class = ClientsSerializer
 
-class CreateClientsAPIView(generics.CreateAPIView):
-    queryset = Client.objects.all()
-    serializer_class = ClientsListSerializer
+# class CreateClientsAPIView(generics.CreateAPIView):
+#     queryset = Client.objects.all()
+#     serializer_class = ClientsListSerializer
 
 class RetrieveClientsAPIView(generics.RetrieveAPIView):
     queryset = Client.objects.all()
@@ -211,6 +214,10 @@ class ClientAddressAPIView(generics.RetrieveAPIView):
 class ClientOrdersAPIView(generics.RetrieveAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientAddressListSerializer
+
+class CreateClientAddressesAPIView(generics.CreateAPIView):
+    queryset = RestaurantAddress.objects.all()
+    serializer_class = ClientCreateSerializer
 
 #client address
 
