@@ -15,7 +15,6 @@ class ClientAddress(models.Model):
     street = models.CharField(max_length=75)
     suburb = models.CharField(max_length=100)
     municipality = models.CharField (max_length=50)
-    state = models.CharField(max_length=50)
     int_number = models.IntegerField()
     ext_number = models.IntegerField()
     zip_code = models.IntegerField()

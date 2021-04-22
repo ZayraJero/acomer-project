@@ -38,12 +38,12 @@ from .views import (
     DeleteMenusAPIView,
     #client
     ListClientsAPIView,
-    CreateClientsAPIView,
     RetrieveClientsAPIView,
     UpdateClientsAPIView,
     DeleteClientsAPIView,
     ClientAddressAPIView,
     ClientOrdersAPIView,
+    CreateClientAddressesAPIView,
     #client addresses
     ListAddressesAPIView,
     CreateAddressesAPIView,
@@ -103,7 +103,7 @@ urlpatterns=[
     path("menu/<int:pk>/delete/",DeleteMenusAPIView.as_view(),name="delete-menu"),
     #client
     path("client/",ListClientsAPIView.as_view(),name="list-client"),
-    path("client/create/",CreateClientsAPIView.as_view(),name="create-client"),#crear con address
+    path("client/create/",CreateClientAddressesAPIView.as_view(),name="create-client"),#crear con address
     path("client/<int:pk>/detail/",RetrieveClientsAPIView.as_view(),name="detail-client"),
     path("client/<int:pk>/update/",UpdateClientsAPIView.as_view(),name="update-client"),
     path("client/<int:pk>/delete/",DeleteClientsAPIView.as_view(),name="delete-client"),

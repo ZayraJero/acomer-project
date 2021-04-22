@@ -62,10 +62,10 @@ class RestaurantAddress(models.Model):
     street = models.CharField(max_length=75)
     suburb = models.CharField(max_length=100)
     municipality = models.CharField (max_length=50)
-    state = models.CharField(max_length=50)
     int_number = models.CharField(max_length=10)
     ext_number = models.CharField(max_length=10)
     zip_code = models.CharField(max_length=10)
+    link_google =models.CharField(max_length=100)
 
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="addresses", null=True)
