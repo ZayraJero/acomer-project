@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import fields
+from django.utils import tree
 from rest_framework import serializers
 from fonda.models import (
     Menu,
@@ -14,7 +15,7 @@ from user.models import (
     ClientAddress,
     Rating
 )
-#Restaurants
+# Restaurants
 class RestaurantListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
@@ -44,12 +45,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
 class PlateListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plate
-        fields = [
-            "id",
-            "type",
-            "name",
-            "price",
-            ]
+        fields = "__all__"
 
 class PlateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -69,18 +65,6 @@ class OrderListSerializer(serializers.ModelSerializer):
 
 
 #restaurantAddresses
-class RestaurantAddressesListSerializer(serializers.ModelSerializer):
-    # restaurant = RestaurantListSerializer()
-    class Meta:
-        model = RestaurantAddress
-        fields = "__all__"
-    # def create(self, validated_data):
-    #     restaurantId = self.validated_data.pop("restaurant")
-    #     restaurant = Restaurant.objects.create(**restaurantId)
-    #     validated_data.pop("restaurant")
-    #     restaurantAddress= RestaurantAddress.objects.create(restaurant = restaurant,**validated_data)
-    #     print(validated_data)
-    #     return restaurantAddress
 
 
         
@@ -90,25 +74,87 @@ class RestaurantAddressesSerializer(serializers.ModelSerializer):
         model = RestaurantAddress
         fields = [
             "id",
+            "status",
             "street",
             "suburb",
             "municipality",
+            "state",
             "int_number",
             "ext_number",
+            "zip_code",
+            "restaurant"
             ]
 
 #foreign restaurant
 class RestaurantAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RestaurantAddress
+        fields = [
+            "id",
+            "status",
+            "street",
+            "suburb",
+            "municipality",
+            "state",
+            "int_number",
+            "ext_number",
+            "zip_code",
+            "restaurant"
+            ]
+
+
+
+# class RestaurantAddressSerializer(serializers.ModelSerializer):
+#      restaurant = RestaurantAddressesSerializer()
+#      class Meta:
+#          model = Restaurant
+#          fields = "__all__"
+
+    # def create(self, validated_data):
+    #     restaurantId = self.validated_data.pop("restaurant")
+    #     restaurant = Restaurant.objects.create(**restaurantId)
+    #     validated_data.pop("restaurant")
+    #     restaurantAddress= RestaurantAddress.objects.create(restaurant = restaurant,**validated_data)
+    #     print(validated_data)
+    #     return restaurantAddress
+
+
+
+
+class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
     addresses = RestaurantAddressesSerializer(many=True)
     class Meta:
         model = Restaurant
         fields = [
-            "id",
             "name",
             "email",
             "phone",
-            "addresses"
-         ]
+            "addresses",
+        ]
+        
+    def create(self, validated_data):
+        restaurantId = self.validated_data.pop("addresses")
+        validated_data.pop("addresses")
+        array_forms = []
+        for restaurant_Id in restaurantId:
+          form = RestaurantAddress.objects.create(**restaurant_Id)
+          array_forms.append(form)
+        restaurant = Restaurant.objects.create(**validated_data)
+        restaurant.addresses.set(array_forms)
+        return restaurant
+
+
+    def update(self, instance, validated_data):
+        adresses_id = self.validated_data.pop("addresses")
+        addresses_viejo = list(RestaurantAddress.objects.filter(restaurant_id=instance.id))
+        for address in range(len(adresses_id)):
+            address_nuevo = super().update(addresses_viejo[address], adresses_id[address])
+        validated_data.pop("addresses")
+        instance = super().update(instance, validated_data)
+        restaurant = super(RestaurantCreateSerializer, self).update(instance, validated_data)
+        restaurant.save()
+        return restaurant
+
 #Menu
 
 class MenusListSerializer(serializers.ModelSerializer):
@@ -158,11 +204,9 @@ class ClientAddressesSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientAddress
         fields = [
+            "id",
             "alias",
-            "suburb",
-            "municipality",
-            "int_number",
-            "ext_number",
+            "client"
             ]
 
 #rating
@@ -176,4 +220,68 @@ class RaitingsListSerializer(serializers.ModelSerializer):
 class MenuPlateSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuPlate
-        fields = "__all__"
+
+
+
+####
+class RestaurantOrderSerializer(serializers.ModelSerializer):
+    orders = OrderListSerializer(many=True)
+    class Meta:
+        model = Restaurant
+        fields = [
+            "id",
+            "name",
+            "email",
+            "phone",
+            "orders"
+         ]
+
+
+class RestaurantMenuSerializer(serializers.ModelSerializer):
+    menus = MenusSerializer(many=True)
+    class Meta:
+        model = Restaurant
+        fields = [
+            "id",
+            "name",
+            "email",
+            "phone",
+            "menus",
+         ]
+
+
+class RestaurantPlatesSerializer(serializers.ModelSerializer):
+    plate = MenuPlateSerializer(many=True)
+    class Meta:
+        model = Restaurant
+        fields = [
+            "id",
+            "name",
+            "email",
+            "phone",
+            "plate"
+         ]
+
+class RestaurantAddressListSerializer(serializers.ModelSerializer):
+    addresses =RestaurantAddressesSerializer(many=True)
+    class Meta:
+        model = Restaurant
+        fields = [
+            "id",
+            "name",
+            "email",
+            "phone",
+            "addresses"
+            ]
+
+
+class RestaurantAddressListsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RestaurantAddress
+        fields = [
+            "id",
+            "status",
+            "street",
+            "suburb",
+            "restaurant",
+            ]

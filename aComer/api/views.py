@@ -19,13 +19,18 @@ from .serializers import (
     RestaurantListSerializer,
     RestaurantSerializer,
     RestaurantAddressSerializer,
+    RestaurantOrderSerializer,
+    RestaurantMenuSerializer,
+    RestaurantPlatesSerializer,
+    RestaurantAddressListSerializer,
+    RestaurantAddressListsSerializer,
     #plates
     PlateListSerializer,
     PlateSerializer,
     #orders
     OrderListSerializer,
     #restaurant addresses
-    RestaurantAddressesListSerializer,
+    RestaurantCreateSerializer,
     RestaurantAddressesSerializer,
     #menu
     MenusListSerializer,
@@ -57,15 +62,31 @@ class RetrieveRestaurantAPIView(generics.RetrieveAPIView):
 
 class UpdateRestaurantAPIView(generics.UpdateAPIView):
     queryset = Restaurant.objects.all()
-    serializer_class = RestaurantListSerializer
+    serializer_class = RestaurantCreateSerializer
 
 class DeleteRestaurantAPIView(generics.DestroyAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer 
 
+####
+
 class RetrieveRestaurantAddressAPIView(generics.RetrieveAPIView):
     queryset = Restaurant.objects.all()
-    serializer_class = RestaurantAddressSerializer
+    serializer_class = RestaurantAddressListSerializer
+
+class RetrieveRestaurantOrdersAPIView(generics.RetrieveAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantOrderSerializer
+
+
+class RetrieveRestaurantMenusAPIView(generics.RetrieveAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantMenuSerializer
+
+
+class RetrieveRestaurantPlatesAPIView(generics.RetrieveAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantPlatesSerializer
 
 
 #PlateView
@@ -116,21 +137,25 @@ class DeleteOrdersAPIView(generics.DestroyAPIView):
 
 class ListRestaurantAddressesAPIView(generics.ListAPIView):
     queryset = RestaurantAddress.objects.all()#.order_by("created_at")
-    serializer_class = RestaurantAddressesSerializer
+    serializer_class = RestaurantAddressListsSerializer
 
 class CreateRestaurantAddressesAPIView(generics.CreateAPIView):
     queryset = RestaurantAddress.objects.all()
-    serializer_class = RestaurantAddressesListSerializer
+    serializer_class = RestaurantCreateSerializer
+
+class CreateRestAddressesAPIView(generics.CreateAPIView):
+    queryset = RestaurantAddress.objects.all()
+    serializer_class = RestaurantAddressSerializer
 
 class RetrieveRestaurantAddressesAPIView(generics.RetrieveAPIView):
     queryset = RestaurantAddress.objects.all()
-    serializer_class = RestaurantAddressesListSerializer
+    serializer_class = RestaurantAddressesSerializer
 
-class UpdateRestaurantAddressesAPIView(generics.UpdateAPIView):
+class RetrieveUpdateRestaurantAddressesAPIView(generics.RetrieveUpdateAPIView):
     queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
-class DeleteRestaurantAddressesAPIView(generics.DestroyAPIView):
+class RetrieveDeleteRestaurantAddressesAPIView(generics.RetrieveDestroyAPIView):
     queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
@@ -172,7 +197,7 @@ class RetrieveClientsAPIView(generics.RetrieveAPIView):
 
 class UpdateClientsAPIView(generics.UpdateAPIView):
     queryset = Client.objects.all()
-    serializer_class = ClientsSerializer
+    serializer_class = ClientsListSerializer
 
 class DeleteClientsAPIView(generics.DestroyAPIView):
     queryset = Client.objects.all()
@@ -192,13 +217,14 @@ class RetrieveAddressesAPIView(generics.RetrieveAPIView):
     queryset = ClientAddress.objects.all()
     serializer_class = ClientAddressesListSerializer
 
-class UpdateAddressesAPIView(generics.UpdateAPIView):
+
+class RetrieveDeleteAddressesAPIView(generics.RetrieveDestroyAPIView):
     queryset = ClientAddress.objects.all()
     serializer_class = ClientAddressesListSerializer
 
-class DeleteAddressesAPIView(generics.DestroyAPIView):
+class RetrieveUpdateAddressesAPIView(generics.RetrieveUpdateAPIView):
     queryset = ClientAddress.objects.all()
-    serializer_class = ClientAddressesSerializer
+    serializer_class = ClientAddressesListSerializer
 
 #ratings
 
