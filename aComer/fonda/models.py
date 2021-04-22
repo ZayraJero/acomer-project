@@ -1,5 +1,10 @@
 from django.db import models
+<<<<<<< HEAD
 from user import models as umodels
+=======
+
+
+>>>>>>> d2da703f3794b3b644012cb1a32f79f4aeeec93a
 
 # Create your models fonda here. 
 
@@ -10,15 +15,26 @@ class Restaurant(models.Model):
     phone = models.CharField(max_length=25)
 
     def __str__(self) -> str:
-        return f"{self.rest_name}"
-
+        return f"{self.name}"
 
 
 
 class Plate(models.Model):
-    type = models.CharField(max_length=100)
+    STATUS_TYPES = (
+        ("primer_tiempo", "Primer Tiempo "),
+        ("segundo_tiempo", "Segundo Tiempo"),
+        ("tercer_tiempo", "Tercer Tiempo"),
+        ("cuarto_tiempo", "Cuarto Tiempo"),
+        ("bebidas", "Bebidas"),
+        ("Complementos", "Complementos"),
+        ("ingredientes_extras", "Ingredientes Extras"),
+        ("tacos", "Tacos"),
+        ("snack", "Snack"),
+    )
+    type = models.CharField(max_length=100, choices =STATUS_TYPES, default="primer tiempo")
     name = models.CharField(max_length=100)
     price = models.FloatField(max_length=10)
+    image = models.ImageField(upload_to = "plate_images")
 
     def __str__(self) -> str:
         return f"{self.type},{self.name}"
@@ -27,16 +43,16 @@ class Plate(models.Model):
 
 class Order(models.Model):
     STATUS_TYPES = (
-        ("recibido, Recibido"),
-        ("preparando, En Preparacion"),
-        ("enviando, En Camino"),
-        ("entregado, Entregado"),
+        ("recibido", "Recibido"),
+        ("preparando", "En Preparacion"),
+        ("enviando", "En Camino"),
+        ("entregado", "Entregado"),
     )
     status = models.CharField(max_length=50, choices=STATUS_TYPES,default="recibido")
    
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders")
-    client = models.ForeignKey(umodels.Client,on_delete=models.PROTECT,related_name="orders")
+    client = models.ForeignKey(to ='user.Client',on_delete=models.PROTECT,related_name="orders")
 
     def __str__(self) -> str:
         return f"{self.status}"
@@ -50,12 +66,12 @@ class RestaurantAddress(models.Model):
     suburb = models.CharField(max_length=100)
     municipality = models.CharField (max_length=50)
     state = models.CharField(max_length=50)
-    int_number = models.IntegerField(max_length=10)
-    ext_number = models.IntegerField(max_length=10)
-    zip_code = models.IntegerField(max_length=5)
+    int_number = models.CharField(max_length=10)
+    ext_number = models.CharField(max_length=10)
+    zip_code = models.CharField(max_length=10)
 
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="addresses")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="addresses", null=True)
 
     def __str__(self) -> str:
         return f"{self.status},{self.street},{self.ext_number},{self.suburb}"
@@ -66,6 +82,7 @@ class Menu(models.Model):
     description = models.CharField(max_length=200)
     groupMenu = models.BooleanField(default=True)
     price = models.FloatField(max_length=10)
+    image = models.ImageField(upload_to = "menu_images")
 
     #Relations
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus")
