@@ -177,9 +177,9 @@ class RetrieveMenusAPIView(generics.RetrieveAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenusListSerializer
 
-class UpdateMenusAPIView(generics.UpdateAPIView):
+class UpdateMenusAPIView(generics.RetrieveUpdateAPIView):
     queryset = Menu.objects.all()
-    serializer_class = MenusSerializer
+    serializer_class = MenusListSerializer
 
 class DeleteMenusAPIView(generics.DestroyAPIView):
     queryset = Menu.objects.all()
