@@ -1,6 +1,4 @@
-from django.db import models
 from django.db.models import fields
-from django.utils import tree
 from rest_framework import serializers
 from fonda.models import (
     Menu,
@@ -157,16 +155,14 @@ class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
 
 #Menu
 
-class MenusListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Menu
-        fields = "__all__"
+
 
 
 class MenusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
         fields = [
+            "id",
             "title",
             "description",
             ]
@@ -220,8 +216,64 @@ class RaitingsListSerializer(serializers.ModelSerializer):
 class MenuPlateSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuPlate
+        fields = "__all__"
+
+class MenuPlateDishesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuPlate
+        fields = ["plate"]
+##menu un platillo
+
+class MenusplateunicSerializer(serializers.ModelSerializer):
+    #plates = MenuPlateDishesSerializer()
+    class Meta:
+        model = Menu
+        fields = [
+            "title",
+            "description",
+            "groupMenu",
+            "price",
+            "restaurant",
+            "plate"
+        ]
 
 
+class MenusListSerializer(serializers.ModelSerializer):
+    #dishes = serializers.ListField(child=serializers.CharField(), allow_empty=True,)
+    plates = MenuPlateDishesSerializer(many=True)
+    class Meta:
+        model = Menu
+        fields = [
+            "title",
+            "description",
+            "groupMenu",
+            "price",
+            #"image",
+            "restaurant",
+            #"dishes",
+            "plates"
+        ]
+    def create(self, validated_data):
+        plate_data = self.validated_data.pop("plates")
+        validated_data.pop("plates")
+        array_forms = []
+        for new_plate in plate_data:
+          plate = MenuPlate.objects.create(**new_plate)
+          array_forms.append(plate)
+          print(new_plate)
+        menu = Menu.objects.create(**validated_data)
+        menu.plates.set(array_forms)
+        return menu
+
+
+    # def create(self,validated_data):
+    #     plate_data = validated_data.pop('plates')#separando los platillos
+    #     Menu.objects.create(**validated_data)
+    #     new_array=[]
+    #     for new_plate in plate_data:
+    #         plate = Plate.objects.create(**new_plate)
+    #         new_array.append(plate)
+    #     print(new_array)
 
 ####
 class RestaurantOrderSerializer(serializers.ModelSerializer):

@@ -36,9 +36,11 @@ from .views import (
     RetrieveMenusAPIView,
     UpdateMenusAPIView,
     DeleteMenusAPIView,
+    CreateMenuUnicAPIView,
     #client
     ListClientsAPIView,
     RetrieveClientsAPIView,
+    CreateClientAPIView,
     UpdateClientsAPIView,
     DeleteClientsAPIView,
     ClientAddressAPIView,
@@ -98,11 +100,13 @@ urlpatterns=[
     #Menu
     path("menu/",ListMenusAPIView.as_view(),name="list-menu"),
     path("menu/create/",CreateMenusAPIView.as_view(),name="create-menu"),
+    path("menu/create/plate",CreateMenuUnicAPIView.as_view(),name="create-plate-menu"),
     path("menu/<int:pk>/detail/",RetrieveMenusAPIView.as_view(),name="detail-menu"),
     path("menu/<int:pk>/update/",UpdateMenusAPIView.as_view(),name="update-menu"),
     path("menu/<int:pk>/delete/",DeleteMenusAPIView.as_view(),name="delete-menu"),
     #client
     path("client/",ListClientsAPIView.as_view(),name="list-client"),
+    path("client/register/",CreateClientAPIView.as_view(),name="create-client"),#crear sin address
     path("client/create/",CreateClientAddressesAPIView.as_view(),name="create-client"),#crear con address
     path("client/<int:pk>/detail/",RetrieveClientsAPIView.as_view(),name="detail-client"),
     path("client/<int:pk>/update/",UpdateClientsAPIView.as_view(),name="update-client"),
