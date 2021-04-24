@@ -35,6 +35,7 @@ from .serializers import (
     #menu
     MenusListSerializer,
     MenusSerializer,
+    MenusplateunicSerializer,
     #client
     ClientsListSerializer,
     ClientsSerializer,
@@ -185,15 +186,19 @@ class DeleteMenusAPIView(generics.DestroyAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenusSerializer
 
+class CreateMenuUnicAPIView(generics.CreateAPIView):
+    queryset = Menu.objects.all()
+    serializer_class = MenusplateunicSerializer
+
 #client
 
 class ListClientsAPIView(generics.ListAPIView):
     queryset = Client.objects.all()#.order_by("created_at")
     serializer_class = ClientsSerializer
 
-# class CreateClientsAPIView(generics.CreateAPIView):
-#     queryset = Client.objects.all()
-#     serializer_class = ClientsListSerializer
+class CreateClientAPIView(generics.CreateAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientsListSerializer
 
 class RetrieveClientsAPIView(generics.RetrieveAPIView):
     queryset = Client.objects.all()

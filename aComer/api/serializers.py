@@ -224,21 +224,18 @@ class MenuPlateDishesSerializer(serializers.ModelSerializer):
         fields = ["plate"]
 ##menu un platillo
 
-# class MenusListSerializer(serializers.ModelSerializer):
-
-#     plates = MenuPlateDishesSerializer()
-#     class Meta:
-#         model = Menu
-#         fields = [
-#             "title",
-#             "description",
-#             "groupMenu",
-#             "price",
-#             "image",
-#             "restaurant",
-#             "dishes",
-#             "plates"
-#         ]
+class MenusplateunicSerializer(serializers.ModelSerializer):
+    #plates = MenuPlateDishesSerializer()
+    class Meta:
+        model = Menu
+        fields = [
+            "title",
+            "description",
+            "groupMenu",
+            "price",
+            "restaurant",
+            "plate"
+        ]
 
 
 class MenusListSerializer(serializers.ModelSerializer):
