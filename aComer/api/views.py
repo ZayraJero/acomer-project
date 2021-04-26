@@ -5,7 +5,7 @@ from fonda.models import (
     Restaurant,
     Plate,
     Order,
-    RestaurantAddress,
+    MenuPlate,
     Menu,
     MenuPlate,
     )
@@ -35,7 +35,8 @@ from .serializers import (
     #menu
     MenusListSerializer,
     MenusSerializer,
-    MenusplateunicSerializer,
+    MenusUpdateSerializer,
+    #MenusplateunicSerializer,
     #client
     ClientsListSerializer,
     ClientsSerializer,
@@ -72,7 +73,7 @@ class DeleteRestaurantAPIView(generics.DestroyAPIView):
     serializer_class = RestaurantSerializer 
 
 class CreateRestaurantAddressesAPIView(generics.CreateAPIView):
-    queryset = RestaurantAddress.objects.all()
+    queryset = MenuPlate.objects.all()
     serializer_class = RestaurantCreateSerializer
 
 ####
@@ -143,25 +144,25 @@ class DeleteOrdersAPIView(generics.DestroyAPIView):
 #RestaurantAddres
 
 class ListRestaurantAddressesAPIView(generics.ListAPIView):
-    queryset = RestaurantAddress.objects.all()#.order_by("created_at")
+    queryset = MenuPlate.objects.all()#.order_by("created_at")
     serializer_class = RestaurantAddressListsSerializer
 
 
 
 class CreateRestAddressesAPIView(generics.CreateAPIView):
-    queryset = RestaurantAddress.objects.all()
+    queryset = MenuPlate.objects.all()
     serializer_class = RestaurantAddressSerializer
 
 class RetrieveRestaurantAddressesAPIView(generics.RetrieveAPIView):
-    queryset = RestaurantAddress.objects.all()
+    queryset = MenuPlate.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
 class RetrieveUpdateRestaurantAddressesAPIView(generics.RetrieveUpdateAPIView):
-    queryset = RestaurantAddress.objects.all()
+    queryset = MenuPlate.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
 class RetrieveDeleteRestaurantAddressesAPIView(generics.RetrieveDestroyAPIView):
-    queryset = RestaurantAddress.objects.all()
+    queryset = MenuPlate.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
 
@@ -180,15 +181,15 @@ class RetrieveMenusAPIView(generics.RetrieveAPIView):
 
 class UpdateMenusAPIView(generics.RetrieveUpdateAPIView):
     queryset = Menu.objects.all()
-    serializer_class = MenusListSerializer
+    serializer_class = MenusUpdateSerializer
 
 class DeleteMenusAPIView(generics.DestroyAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenusSerializer
 
-class CreateMenuUnicAPIView(generics.CreateAPIView):
-    queryset = Menu.objects.all()
-    serializer_class = MenusplateunicSerializer
+# class CreateMenuUnicAPIView(generics.CreateAPIView):
+#     queryset = Menu.objects.all()
+#     serializer_class = MenusplateunicSerializer
 
 #client
 
@@ -221,7 +222,7 @@ class ClientOrdersAPIView(generics.RetrieveAPIView):
     serializer_class = ClientAddressListSerializer
 
 class CreateClientAddressesAPIView(generics.CreateAPIView):
-    queryset = RestaurantAddress.objects.all()
+    queryset = MenuPlate.objects.all()
     serializer_class = ClientCreateSerializer
 
 #client address

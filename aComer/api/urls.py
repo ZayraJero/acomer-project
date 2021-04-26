@@ -36,7 +36,7 @@ from .views import (
     RetrieveMenusAPIView,
     UpdateMenusAPIView,
     DeleteMenusAPIView,
-    CreateMenuUnicAPIView,
+    #CreateMenuUnicAPIView,
     #client
     ListClientsAPIView,
     RetrieveClientsAPIView,
@@ -100,7 +100,7 @@ urlpatterns=[
     #Menu
     path("menu/",ListMenusAPIView.as_view(),name="list-menu"),
     path("menu/create/",CreateMenusAPIView.as_view(),name="create-menu"),
-    path("menu/create/plate",CreateMenuUnicAPIView.as_view(),name="create-plate-menu"),
+    #path("menu/create/plate",CreateMenuUnicAPIView.as_view(),name="create-plate-menu"),
     path("menu/<int:pk>/detail/",RetrieveMenusAPIView.as_view(),name="detail-menu"),
     path("menu/<int:pk>/update/",UpdateMenusAPIView.as_view(),name="update-menu"),
     path("menu/<int:pk>/delete/",DeleteMenusAPIView.as_view(),name="delete-menu"),

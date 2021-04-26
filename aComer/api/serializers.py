@@ -6,7 +6,7 @@ from fonda.models import (
     Order,
     Plate,
     Restaurant,
-    RestaurantAddress,
+    MenuPlate,
     )
 from user.models import (
     Client,
@@ -69,7 +69,7 @@ class OrderListSerializer(serializers.ModelSerializer):
 
 class RestaurantAddressesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RestaurantAddress
+        model = MenuPlate
         fields = [
             "id",
             "status",
@@ -86,7 +86,7 @@ class RestaurantAddressesSerializer(serializers.ModelSerializer):
 #foreign restaurant
 class RestaurantAddressSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RestaurantAddress
+        model = MenuPlate
         fields = [
             "id",
             "status",
@@ -135,7 +135,7 @@ class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
         validated_data.pop("addresses")
         array_forms = []
         for restaurant_Id in restaurantId:
-          form = RestaurantAddress.objects.create(**restaurant_Id)
+          form = MenuPlate.objects.create(**restaurant_Id)
           array_forms.append(form)
         restaurant = Restaurant.objects.create(**validated_data)
         restaurant.addresses.set(array_forms)
@@ -144,7 +144,7 @@ class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
 
     def update(self, instance, validated_data):
         adresses_id = self.validated_data.pop("addresses")
-        addresses_viejo = list(RestaurantAddress.objects.filter(restaurant_id=instance.id))
+        addresses_viejo = list(MenuPlate.objects.filter(restaurant_id=instance.id))
         for address in range(len(adresses_id)):
             address_nuevo = super().update(addresses_viejo[address], adresses_id[address])
         validated_data.pop("addresses")
@@ -224,18 +224,23 @@ class MenuPlateDishesSerializer(serializers.ModelSerializer):
         fields = ["plate"]
 ##menu un platillo
 
-class MenusplateunicSerializer(serializers.ModelSerializer):
-    #plates = MenuPlateDishesSerializer()
-    class Meta:
-        model = Menu
-        fields = [
-            "title",
-            "description",
-            "groupMenu",
-            "price",
-            "restaurant",
-            "plate"
-        ]
+# class MenusplateunicSerializer(serializers.ModelSerializer):
+#     plates = MenuPlateDishesSerializer(many=True)
+#     class Meta:
+#         model = Menu
+#         fields = [
+#             "title",
+#             "description",
+#             "groupMenu",
+#             "price",
+#             "restaurant",
+#             "plates"
+#         ]
+#     def create(self, validated_data):
+#         plate_data = validated_data.pop('plates')
+#         plate = Menu.objects.create(**validated_data)
+#         MenuPlate.objects.create(plate=plate, **plate_data)
+#         return plate
 
 
 class MenusListSerializer(serializers.ModelSerializer):
@@ -248,9 +253,7 @@ class MenusListSerializer(serializers.ModelSerializer):
             "description",
             "groupMenu",
             "price",
-            #"image",
             "restaurant",
-            #"dishes",
             "plates"
         ]
     def create(self, validated_data):
@@ -266,14 +269,27 @@ class MenusListSerializer(serializers.ModelSerializer):
         return menu
 
 
-    # def create(self,validated_data):
-    #     plate_data = validated_data.pop('plates')#separando los platillos
-    #     Menu.objects.create(**validated_data)
-    #     new_array=[]
-    #     for new_plate in plate_data:
-    #         plate = Plate.objects.create(**new_plate)
-    #         new_array.append(plate)
-    #     print(new_array)
+class MenusUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = [
+            "title",
+            "description",
+            "groupMenu",
+            "price",
+            "image"
+            ]
+
+    # def update(self, instance, validated_data):
+    #     plate_data = self.validated_data.pop("plates")
+    #     plate_viejo = list(MenuPlate.objects.filter(menu_id=instance.id))
+    #     for menus in range(len(plate_data)):
+    #         menu_nuevo = super().update(plate_viejo[menus], plate_data[menus])
+    #     validated_data.pop("plates")
+    #     instance = super().update(instance, validated_data)
+    #     menu = super(MenusListSerializer, self).update(instance, validated_data)
+    #     menu.save()
+    #     return menu
 
 ####
 class RestaurantOrderSerializer(serializers.ModelSerializer):
@@ -329,7 +345,7 @@ class RestaurantAddressListSerializer(serializers.ModelSerializer):
 
 class RestaurantAddressListsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RestaurantAddress
+        model = MenuPlate
         fields = [
             "id",
             "status",
