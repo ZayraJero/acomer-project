@@ -217,31 +217,17 @@ class RaitingsListSerializer(serializers.ModelSerializer):
 class MenuPlateSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuPlate
-        fields = "__all__"
+        fields = [
+            "plate",
+            "menu",
+            "order"
+        ]
 
 class MenuPlateDishesSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuPlate
         fields = ["plate"]
 ##menu un platillo
-
-# class MenusplateunicSerializer(serializers.ModelSerializer):
-#     plates = MenuPlateDishesSerializer(many=True)
-#     class Meta:
-#         model = Menu
-#         fields = [
-#             "title",
-#             "description",
-#             "groupMenu",
-#             "price",
-#             "restaurant",
-#             "plates"
-#         ]
-#     def create(self, validated_data):
-#         plate_data = validated_data.pop('plates')
-#         plate = Menu.objects.create(**validated_data)
-#         MenuPlate.objects.create(plate=plate, **plate_data)
-#         return plate
 
 
 class MenusListSerializer(serializers.ModelSerializer):
@@ -354,7 +340,6 @@ class RestaurantAddressListsSerializer(serializers.ModelSerializer):
             "suburb",
             "restaurant",
             ]
-
 
 class ClientAddressListSerializer(serializers.ModelSerializer):
     addresses =ClientAddressesListSerializer(many=True)

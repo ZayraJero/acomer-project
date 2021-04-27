@@ -7,7 +7,7 @@ from fonda.models import (
     Order,
     MenuPlate,
     Menu,
-    MenuPlate,
+    RestaurantAddress,
     )
 from user.models import (
     Client,
@@ -144,25 +144,25 @@ class DeleteOrdersAPIView(generics.DestroyAPIView):
 #RestaurantAddres
 
 class ListRestaurantAddressesAPIView(generics.ListAPIView):
-    queryset = MenuPlate.objects.all()#.order_by("created_at")
+    queryset = RestaurantAddress.objects.all()#.order_by("created_at")
     serializer_class = RestaurantAddressListsSerializer
 
 
 
 class CreateRestAddressesAPIView(generics.CreateAPIView):
-    queryset = MenuPlate.objects.all()
+    queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressSerializer
 
 class RetrieveRestaurantAddressesAPIView(generics.RetrieveAPIView):
-    queryset = MenuPlate.objects.all()
+    queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
 class RetrieveUpdateRestaurantAddressesAPIView(generics.RetrieveUpdateAPIView):
-    queryset = MenuPlate.objects.all()
+    queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
 class RetrieveDeleteRestaurantAddressesAPIView(generics.RetrieveDestroyAPIView):
-    queryset = MenuPlate.objects.all()
+    queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
 
