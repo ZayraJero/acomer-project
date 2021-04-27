@@ -26,10 +26,9 @@ SECRET_KEY = getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['0.0.0.0']
 CORS_ORIGIN_ALLOW_ALL = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -136,3 +135,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATICFILES_DIRS = [BASE_DIR / "static"]
