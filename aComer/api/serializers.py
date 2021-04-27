@@ -6,7 +6,7 @@ from fonda.models import (
     Order,
     Plate,
     Restaurant,
-    MenuPlate,
+    RestaurantAddress,
     )
 from user.models import (
     Client,
@@ -69,7 +69,7 @@ class OrderListSerializer(serializers.ModelSerializer):
 
 class RestaurantAddressesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MenuPlate
+        model = RestaurantAddress
         fields = [
             "id",
             "status",
@@ -86,7 +86,7 @@ class RestaurantAddressesSerializer(serializers.ModelSerializer):
 #foreign restaurant
 class RestaurantAddressSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MenuPlate
+        model = RestaurantAddress
         fields = [
             "id",
             "status",
@@ -135,7 +135,7 @@ class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
         validated_data.pop("addresses")
         array_forms = []
         for restaurant_Id in restaurantId:
-          form = MenuPlate.objects.create(**restaurant_Id)
+          form = RestaurantAddress.objects.create(**restaurant_Id)
           array_forms.append(form)
         restaurant = Restaurant.objects.create(**validated_data)
         restaurant.addresses.set(array_forms)
@@ -144,7 +144,7 @@ class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
 
     def update(self, instance, validated_data):
         adresses_id = self.validated_data.pop("addresses")
-        addresses_viejo = list(MenuPlate.objects.filter(restaurant_id=instance.id))
+        addresses_viejo = list(RestaurantAddress.objects.filter(restaurant_id=instance.id))
         for address in range(len(adresses_id)):
             address_nuevo = super().update(addresses_viejo[address], adresses_id[address])
         validated_data.pop("addresses")
@@ -345,7 +345,7 @@ class RestaurantAddressListSerializer(serializers.ModelSerializer):
 
 class RestaurantAddressListsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MenuPlate
+        model = RestaurantAddress
         fields = [
             "id",
             "status",
@@ -411,6 +411,6 @@ class ClientCreateSerializer(serializers.ModelSerializer):#restaurant create
             address_nuevo = super().update(client_viejo[address], clients_id[address])
         validated_data.pop("addresses")
         instance = super().update(instance, validated_data)
-        client = super(RestaurantCreateSerializer, self).update(instance, validated_data)
+        client = super(ClientCreateSerializer, self).update(instance, validated_data)
         client.save()
         return client
