@@ -6,7 +6,7 @@ from fonda.models import (
     Order,
     Plate,
     Restaurant,
-    MenuPlate,
+    RestaurantAddress,
     )
 from user.models import (
     Client,
@@ -69,7 +69,7 @@ class OrderListSerializer(serializers.ModelSerializer):
 
 class RestaurantAddressesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MenuPlate
+        model = RestaurantAddress
         fields = [
             "id",
             "status",
