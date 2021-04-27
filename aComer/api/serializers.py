@@ -86,7 +86,7 @@ class RestaurantAddressesSerializer(serializers.ModelSerializer):
 #foreign restaurant
 class RestaurantAddressSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MenuPlate
+        model = RestaurantAddress
         fields = [
             "id",
             "status",
@@ -345,7 +345,7 @@ class RestaurantAddressListSerializer(serializers.ModelSerializer):
 
 class RestaurantAddressListsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MenuPlate
+        model = RestaurantAddress
         fields = [
             "id",
             "status",
