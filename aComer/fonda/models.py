@@ -56,7 +56,7 @@ class Order(models.Model):
 
 
 
-class MenuPlate(models.Model):
+class RestaurantAddress(models.Model):
     """Info de la direccion del restaurante"""
     status = models.BooleanField(default=False)
     street = models.CharField(max_length=75)
