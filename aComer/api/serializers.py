@@ -1,5 +1,5 @@
 from django.db.models import fields
-from rest_framework import serializers
+from rest_framework import serializers#9b47253
 from fonda.models import (
     Menu,
     MenuPlate,
