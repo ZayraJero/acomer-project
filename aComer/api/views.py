@@ -1,5 +1,6 @@
 #from django.shortcuts import render
 from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
 # Create your views here.
 from fonda.models import (
     Restaurant,
@@ -102,6 +103,8 @@ class RetrieveRestaurantPlatesAPIView(generics.RetrieveAPIView):
 class ListPlatesAPIView(generics.ListAPIView):
     queryset = Plate.objects.all()#.order_by("created_at")
     serializer_class = PlateSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['type']
 
 class CreatePlatesAPIView(generics.CreateAPIView):
     queryset = Plate.objects.all()
