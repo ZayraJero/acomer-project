@@ -48,8 +48,8 @@ class Order(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_TYPES,default="recibido",null=True)
    
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders",null=True)
-    client = models.ForeignKey(to ='user.Client',on_delete=models.PROTECT,related_name="orders",null=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="orders",null=True)
+    client = models.ForeignKey(to ='user.Client',on_delete=models.CASCADE,related_name="orders",null=True)
 
     def __str__(self) -> str:
         return f"{self.status}"
@@ -82,13 +82,13 @@ class Menu(models.Model):
     image = models.ImageField(upload_to = "menu_images")
 
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus",null=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="menus",null=True)
 
     def __str__(self) -> str:
         return f"{self.groupMenu},{self.price}"
 
 class MenuPlate(models.Model):
     #Relations
-    plate = models.ForeignKey(Plate, on_delete=models.PROTECT,related_name="plates",null=True)
-    menu = models.ForeignKey(Menu,on_delete=models.PROTECT,related_name="plates",null=True)
-    order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name="plates",null=True)
+    plate = models.ForeignKey(Plate, on_delete=models.CASCADE,related_name="plates",null=True)
+    menu = models.ForeignKey(Menu,on_delete=models.CASCADE,related_name="plates",null=True)
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name="plates",null=True)
