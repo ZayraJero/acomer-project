@@ -411,6 +411,6 @@ class ClientCreateSerializer(serializers.ModelSerializer):#restaurant create
             address_nuevo = super().update(client_viejo[address], clients_id[address])
         validated_data.pop("addresses")
         instance = super().update(instance, validated_data)
-        client = super(RestaurantCreateSerializer, self).update(instance, validated_data)
+        client = super(ClientCreateSerializer, self).update(instance, validated_data)
         client.save()
         return client
