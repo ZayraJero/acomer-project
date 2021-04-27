@@ -49,8 +49,10 @@ class PlateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plate
         fields = [
+            "id",
             "type",
             "name",
+            "price"
             ]
 
 
