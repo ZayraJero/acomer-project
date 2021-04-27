@@ -165,6 +165,7 @@ class MenusSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "description",
+            "price",
             ]
 
 #Client
