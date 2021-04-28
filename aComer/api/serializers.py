@@ -231,6 +231,21 @@ class MenuPlateDishesSerializer(serializers.ModelSerializer):
         fields = ["plate"]
 ##menu un platillo
 
+# class MenusDetailSerializer(serializers.ModelSerializer):
+#     #grouped_plates = serializers.DictField()
+#     class Meta:
+#         model = Menu
+#         fields = [
+#             "title",
+#             "description",
+#             "groupMenu",
+#             "price",
+#             "restaurant",
+            
+#         ]
+
+#     def validate(self,data):
+#         print(data)
 
 class MenusListSerializer(serializers.ModelSerializer):
     #dishes = serializers.ListField(child=serializers.CharField(), allow_empty=True,)

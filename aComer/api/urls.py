@@ -1,6 +1,7 @@
 from django.db import router
 from django.urls import path,include
 from rest_framework import routers
+from rest_framework.authtoken import views
 from .views import (
     #Restaurant
     ListRestaurantsAPIView,
@@ -69,6 +70,7 @@ from .views import (
 urlpatterns=[
     #Restaurant
     path("restaurant/",ListRestaurantsAPIView.as_view(),name="list-restaurants"),
+    #path("restaurant/login/",views.obtain_auth_token,name="login-restaurants"),
     path("restaurant/create/",CreateRestaurantAddressesAPIView.as_view(),name="create-raddress"),
     #path("restaurant/create/",CreateRestaurantAddressesAPIView.as_view(),name="create-restaurants"),
     path("restaurant/<int:pk>/detail/",RetrieveRestaurantAPIView.as_view(),name="detail-restaurants"),
@@ -105,6 +107,7 @@ urlpatterns=[
     path("menu/<int:pk>/delete/",DeleteMenusAPIView.as_view(),name="delete-menu"),
     #client
     path("client/",ListClientsAPIView.as_view(),name="list-client"),
+    #path("client/login/",views.obtain_auth_token,name="login-client"),
     path("client/register/",CreateClientAPIView.as_view(),name="create-client"),#crear sin address
     path("client/create/",CreateClientAddressesAPIView.as_view(),name="create-client"),#crear con address
     path("client/<int:pk>/detail/",RetrieveClientsAPIView.as_view(),name="detail-client"),

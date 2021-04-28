@@ -1,6 +1,8 @@
 #from django.shortcuts import render
+from django.http.request import HttpHeaders
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+from django.http import JsonResponse
 # Create your views here.
 from fonda.models import (
     Restaurant,
@@ -37,6 +39,7 @@ from .serializers import (
     MenusListSerializer,
     MenusSerializer,
     MenusUpdateSerializer,
+    #MenusDetailSerializer,
     #MenusplateunicSerializer,
     #client
     ClientsListSerializer,
@@ -178,9 +181,48 @@ class CreateMenusAPIView(generics.CreateAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenusListSerializer
 
-class RetrieveMenusAPIView(generics.RetrieveAPIView):
+class RetrieveMenusAPIView(generics.GenericAPIView):
     queryset = Menu.objects.all()
-    serializer_class = MenusListSerializer
+    #serializer_class = MenusDetailSerializer
+    permission_classes = []
+
+    def get(self,*args,**kwargs):
+        print(args,kwargs)
+        menu = self.queryset.get(id=kwargs["pk"])
+        print(menu.__dict__)
+        grouped_plates = {
+            "primer_tiempo":[],
+            "segundo_tiempo":[],
+            "tercer_tiempo":[],
+            "cuarto_tiempo":[],
+            "bebidas":[],
+            "Complementos":[],
+            "ingredientes_extras":[],
+            "tacos":[],
+            "snack":[],
+        }
+        plates = list(menu.plates.all().values_list("plate",flat=True))
+        retrieved_plates = Plate.objects.filter(id__in=plates)
+        for plate in retrieved_plates:
+            plate_dict = {
+                "id":plate.id,
+                "name":plate.name,
+                "price":plate.price,
+                #"image":plate.image,
+            }
+            grouped_plates[plate.type].append(plate_dict)
+        response = {
+            "menu":{
+                "title":menu.title,
+                "description":menu.description,
+                "groupMenu":menu.groupMenu,
+                "price":menu.price,
+                #"image":menu.image,
+                "plates":grouped_plates,
+            }
+        }
+        print(response)
+        return JsonResponse(response)
 
 class UpdateMenusAPIView(generics.RetrieveUpdateAPIView):
     queryset = Menu.objects.all()
