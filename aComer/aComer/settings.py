@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
-
+from os import getenv
+from dotenv import load_dotenv 
+load_dotenv() #find_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,14 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'b4r9dv0!m@&+kaws7jd2fs2v3!1n_(dfvz3bx6(-zr$=6fx-^l'
+SECRET_KEY = getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -45,8 +46,10 @@ INSTALLED_APPS = [
     'api',
     #instaled apps
     'rest_framework',
+    #'rest_framework.authtoken',
     'crispy_forms',
     'corsheaders',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +63,13 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
 ]
+
+# REST_FRAMEWORK = {
+#     "DEFAULT_AUTHENTICATION_CLASSES": (
+#         "rest_framework.authentication.TokenAuthentication",
+#     ),
+#     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+# }
 
 ROOT_URLCONF = 'aComer.urls'
 
@@ -87,12 +97,12 @@ WSGI_APPLICATION = 'aComer.wsgi.application'
 
 DATABASES = {
     'default': {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "acomer",
-        "USER": "admin_acomer",
-        "PASSWORD": "acomer123",
-        "HOST": "database-1.cbrynrrwsoof.us-east-2.rds.amazonaws.com",
-        "PORT": "5432",
+        "ENGINE": getenv('DBENGINE'),
+        "NAME": getenv('DBNAME'),
+        "USER": getenv('DBUSER'),
+        "PASSWORD": getenv('DBPASSWORD'),
+        "HOST": getenv('DBHOST'),
+        "PORT": getenv('DBPORT'),
     }
 }
 
@@ -134,3 +144,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATICFILES_DIRS = [BASE_DIR / "static"]

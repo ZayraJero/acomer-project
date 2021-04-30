@@ -1,5 +1,8 @@
 #from django.shortcuts import render
+from django.contrib.auth.models import User
 from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from django.http import JsonResponse
 # Create your views here.
 from fonda.models import (
     Restaurant,
@@ -7,7 +10,7 @@ from fonda.models import (
     Order,
     MenuPlate,
     Menu,
-    MenuPlate,
+    RestaurantAddress,
     )
 from user.models import (
     Client,
@@ -36,6 +39,7 @@ from .serializers import (
     MenusListSerializer,
     MenusSerializer,
     MenusUpdateSerializer,
+    #MenusDetailSerializer,
     #MenusplateunicSerializer,
     #client
     ClientsListSerializer,
@@ -49,6 +53,8 @@ from .serializers import (
     RaitingsListSerializer,
     #menuPlate
     MenuPlateSerializer,
+    #user
+    UserSerializer
     )
 
 #RestaurantViews
@@ -75,6 +81,7 @@ class DeleteRestaurantAPIView(generics.DestroyAPIView):
 class CreateRestaurantAddressesAPIView(generics.CreateAPIView):
     queryset = MenuPlate.objects.all()
     serializer_class = RestaurantCreateSerializer
+    permission_classes = []
 
 ####
 
@@ -102,6 +109,8 @@ class RetrieveRestaurantPlatesAPIView(generics.RetrieveAPIView):
 class ListPlatesAPIView(generics.ListAPIView):
     queryset = Plate.objects.all()#.order_by("created_at")
     serializer_class = PlateSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['type']
 
 class CreatePlatesAPIView(generics.CreateAPIView):
     queryset = Plate.objects.all()
@@ -118,6 +127,44 @@ class UpdatePlatesAPIView(generics.UpdateAPIView):
 class DeletePlatesAPIView(generics.DestroyAPIView):
     queryset = Plate.objects.all()
     serializer_class = PlateSerializer
+
+class FilterPlatesAPIView(generics.GenericAPIView):
+    queryset = Plate.objects.all()
+    #serializer_class = MenusDetailSerializer
+    #permission_classes = []
+
+    def get(self,*args,**kwargs):
+        print(args,kwargs)
+        #menu = self.queryset.get(id=kwargs["pk"])
+        #print(menu.__dict__)
+        grouped_plates = {
+            "primer_tiempo":[],
+            "segundo_tiempo":[],
+            "tercer_tiempo":[],
+            "cuarto_tiempo":[],
+            "bebidas":[],
+            "Complementos":[],
+            "ingredientes_extras":[],
+            "tacos":[],
+            "snack":[],
+        }
+        plates = list(Plate.objects.all().values_list(flat=True))
+        retrieved_plates = Plate.objects.filter(id__in=plates)
+        for plate in retrieved_plates:
+            plate_dict = {
+                "id":plate.id,
+                "name":plate.name,
+                "price":plate.price,
+                #"image":plate.image,
+            }
+            grouped_plates[plate.type].append(plate_dict)
+        response = {
+            
+                "plates":grouped_plates,
+            
+        }
+        print(response)
+        return JsonResponse(response)
 
 #Order
 
@@ -144,25 +191,25 @@ class DeleteOrdersAPIView(generics.DestroyAPIView):
 #RestaurantAddres
 
 class ListRestaurantAddressesAPIView(generics.ListAPIView):
-    queryset = MenuPlate.objects.all()#.order_by("created_at")
+    queryset = RestaurantAddress.objects.all()#.order_by("created_at")
     serializer_class = RestaurantAddressListsSerializer
 
 
 
 class CreateRestAddressesAPIView(generics.CreateAPIView):
-    queryset = MenuPlate.objects.all()
+    queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressSerializer
 
 class RetrieveRestaurantAddressesAPIView(generics.RetrieveAPIView):
-    queryset = MenuPlate.objects.all()
+    queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
 class RetrieveUpdateRestaurantAddressesAPIView(generics.RetrieveUpdateAPIView):
-    queryset = MenuPlate.objects.all()
+    queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
 class RetrieveDeleteRestaurantAddressesAPIView(generics.RetrieveDestroyAPIView):
-    queryset = MenuPlate.objects.all()
+    queryset = RestaurantAddress.objects.all()
     serializer_class = RestaurantAddressesSerializer
 
 
@@ -175,9 +222,48 @@ class CreateMenusAPIView(generics.CreateAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenusListSerializer
 
-class RetrieveMenusAPIView(generics.RetrieveAPIView):
+class RetrieveMenusAPIView(generics.GenericAPIView):
     queryset = Menu.objects.all()
-    serializer_class = MenusListSerializer
+    #serializer_class = MenusDetailSerializer
+    #permission_classes = []
+
+    def get(self,*args,**kwargs):
+        print(args,kwargs)
+        menu = self.queryset.get(id=kwargs["pk"])
+        print(menu.__dict__)
+        grouped_plates = {
+            "primer_tiempo":[],
+            "segundo_tiempo":[],
+            "tercer_tiempo":[],
+            "cuarto_tiempo":[],
+            "bebidas":[],
+            "Complementos":[],
+            "ingredientes_extras":[],
+            "tacos":[],
+            "snack":[],
+        }
+        plates = list(menu.plates.all().values_list("plate",flat=True))
+        retrieved_plates = Plate.objects.filter(id__in=plates)
+        for plate in retrieved_plates:
+            plate_dict = {
+                "id":plate.id,
+                "name":plate.name,
+                "price":plate.price,
+                #"image":plate.image,
+            }
+            grouped_plates[plate.type].append(plate_dict)
+        response = {
+            "menu":{
+                "title":menu.title,
+                "description":menu.description,
+                "groupMenu":menu.groupMenu,
+                "price":menu.price,
+                #"image":menu.image,
+                "plates":grouped_plates,
+            }
+        }
+        print(response)
+        return JsonResponse(response)
 
 class UpdateMenusAPIView(generics.RetrieveUpdateAPIView):
     queryset = Menu.objects.all()
@@ -200,6 +286,7 @@ class ListClientsAPIView(generics.ListAPIView):
 class CreateClientAPIView(generics.CreateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientsListSerializer
+    permission_classes = []
 
 class RetrieveClientsAPIView(generics.RetrieveAPIView):
     queryset = Client.objects.all()
@@ -224,6 +311,7 @@ class ClientOrdersAPIView(generics.RetrieveAPIView):
 class CreateClientAddressesAPIView(generics.CreateAPIView):
     queryset = MenuPlate.objects.all()
     serializer_class = ClientCreateSerializer
+    permission_classes = []
 
 #client address
 
@@ -291,3 +379,11 @@ class UpdateMenuPlateAPIView(generics.UpdateAPIView):
 class DeleteMenuPlateAPIView(generics.DestroyAPIView):
     queryset = MenuPlate.objects.all()
     serializer_class = MenuPlateSerializer
+
+class CreateUserAPIView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = []
+
+
+

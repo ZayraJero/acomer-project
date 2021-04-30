@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Client(models.Model):
@@ -8,8 +8,13 @@ class Client(models.Model):
     phone = models.CharField(max_length=25)
     email = models.EmailField(unique=True)
 
+    #relations
+    user =models.OneToOneField(User, on_delete=models.CASCADE,blank=True,null=True)
+
     def __str__(self) -> str:
         return f"{self.first_name},{self.last_name}"
+
+
 
 class ClientAddress(models.Model):
     alias = models.CharField(max_length=50)
