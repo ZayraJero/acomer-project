@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import tree
+from django.contrib.auth.models import User
 
 
 
@@ -13,6 +13,8 @@ class Restaurant(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}"
+    #relations
+    user =models.OneToOneField(User, on_delete=models.CASCADE,blank=True,null=True)
 
 
 
@@ -48,8 +50,8 @@ class Order(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_TYPES,default="recibido",null=True)
    
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="orders",null=True)
-    client = models.ForeignKey(to ='user.Client',on_delete=models.PROTECT,related_name="orders",null=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="orders",null=True)
+    client = models.ForeignKey(to ='user.Client',on_delete=models.CASCADE,related_name="orders",null=True)
 
     def __str__(self) -> str:
         return f"{self.status}"
@@ -82,13 +84,19 @@ class Menu(models.Model):
     image = models.ImageField(upload_to = "menu_images")
 
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT, related_name="menus",null=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="menus",null=True)
 
     def __str__(self) -> str:
         return f"{self.groupMenu},{self.price}"
 
 class MenuPlate(models.Model):
     #Relations
+<<<<<<< HEAD
     plate = models.ForeignKey(Plate, on_delete=models.PROTECT,related_name="plates",null=True)
     menu = models.ForeignKey(Menu,on_delete=models.PROTECT,related_name="plates",null=True)
     order = models.ForeignKey(Order,on_delete=models.PROTECT,related_name="plates",null=True)
+=======
+    plate = models.ForeignKey(Plate, on_delete=models.CASCADE,related_name="plates",null=True)
+    menu = models.ForeignKey(Menu,on_delete=models.CASCADE,related_name="plates",null=True)
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name="plates",null=True)
+>>>>>>> main

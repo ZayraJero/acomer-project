@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Client(models.Model):
@@ -7,8 +8,13 @@ class Client(models.Model):
     phone = models.CharField(max_length=25)
     email = models.EmailField(unique=True)
 
+    #relations
+    user =models.OneToOneField(User, on_delete=models.CASCADE,blank=True,null=True)
+
     def __str__(self) -> str:
         return f"{self.first_name},{self.last_name}"
+
+
 
 class ClientAddress(models.Model):
     alias = models.CharField(max_length=50)
@@ -37,7 +43,7 @@ class Rating(models.Model):
     rating = models.CharField(max_length=50,choices=RATING_TYPES,default="muy bueno")
 
     #Relations
-    restaurant = models.ForeignKey(to='fonda.Restaurant', on_delete=models.PROTECT, related_name="ratings",null=True)
+    restaurant = models.ForeignKey(to='fonda.Restaurant', on_delete=models.CASCADE, related_name="ratings",null=True)
     client = models.ForeignKey(Client,on_delete=models.CASCADE,related_name="ratings",null=True)
 
     def __str__(self) -> str:
