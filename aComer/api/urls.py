@@ -18,6 +18,7 @@ from .views import (
     RetrievePlatesAPIView,
     UpdatePlatesAPIView,
     DeletePlatesAPIView,
+    FilterPlatesAPIView,
     #order
     ListOrdersAPIView,
     CreateOrdersAPIView,
@@ -88,6 +89,7 @@ urlpatterns=[
     path("plate/<int:pk>/detail/",RetrievePlatesAPIView.as_view(),name="detail-plate"),
     path("plate/<int:pk>/update/",UpdatePlatesAPIView.as_view(),name="update-plate"),
     path("plate/<int:pk>/delete/",DeletePlatesAPIView.as_view(),name="delete-plate"),
+    path("plate/filter",FilterPlatesAPIView.as_view(),name="delete-plate"),
     #order
     path("order/",ListOrdersAPIView.as_view(),name="list-plate"),
     path("order/create/",CreateOrdersAPIView.as_view(),name="create-plate"),

@@ -128,6 +128,44 @@ class DeletePlatesAPIView(generics.DestroyAPIView):
     queryset = Plate.objects.all()
     serializer_class = PlateSerializer
 
+class FilterPlatesAPIView(generics.GenericAPIView):
+    queryset = Plate.objects.all()
+    #serializer_class = MenusDetailSerializer
+    #permission_classes = []
+
+    def get(self,*args,**kwargs):
+        print(args,kwargs)
+        #menu = self.queryset.get(id=kwargs["pk"])
+        #print(menu.__dict__)
+        grouped_plates = {
+            "primer_tiempo":[],
+            "segundo_tiempo":[],
+            "tercer_tiempo":[],
+            "cuarto_tiempo":[],
+            "bebidas":[],
+            "Complementos":[],
+            "ingredientes_extras":[],
+            "tacos":[],
+            "snack":[],
+        }
+        plates = list(Plate.objects.all().values_list(flat=True))
+        retrieved_plates = Plate.objects.filter(id__in=plates)
+        for plate in retrieved_plates:
+            plate_dict = {
+                "id":plate.id,
+                "name":plate.name,
+                "price":plate.price,
+                #"image":plate.image,
+            }
+            grouped_plates[plate.type].append(plate_dict)
+        response = {
+            
+                "plates":grouped_plates,
+            
+        }
+        print(response)
+        return JsonResponse(response)
+
 #Order
 
 class ListOrdersAPIView(generics.ListAPIView):
