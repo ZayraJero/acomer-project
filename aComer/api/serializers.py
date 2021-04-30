@@ -1,5 +1,9 @@
+from django.contrib.auth.models import User
+from django.db import models
 from django.db.models import fields
-from rest_framework import serializers#9b47253
+from django.contrib.auth.models import User
+from django.db.models.fields.related import OneToOneField
+from rest_framework import authtoken, serializers#9b47253
 from fonda.models import (
     Menu,
     MenuPlate,
@@ -117,11 +121,27 @@ class RestaurantAddressSerializer(serializers.ModelSerializer):
     #     restaurantAddress= RestaurantAddress.objects.create(restaurant = restaurant,**validated_data)
     #     print(validated_data)
     #     return restaurantAddress
-
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields=[
+            "username",
+            "password",
+        ]
+        extra_kwargs ={
+            "password":{
+                "write_only":True
+            }
+        }
+    
+    def create(self,validated_data):
+        user=User.objects.create_user(**validated_data)
+        return user
 
 
 
 class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
+    user = UserSerializer()
     addresses = RestaurantAddressesSerializer(many=True)
     class Meta:
         model = Restaurant
@@ -130,16 +150,22 @@ class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
             "email",
             "phone",
             "addresses",
+            "user",
         ]
         
     def create(self, validated_data):
         restaurantId = self.validated_data.pop("addresses")
+        userDataId= self.validated_data.pop("user")
+        userData = User.objects.create(**userDataId)
         validated_data.pop("addresses")
+        validated_data.pop("user")
         array_forms = []
         for restaurant_Id in restaurantId:
           form = RestaurantAddress.objects.create(**restaurant_Id)
           array_forms.append(form)
         restaurant = Restaurant.objects.create(**validated_data)
+        restaurant.user=userData
+        restaurant.save()
         restaurant.addresses.set(array_forms)
         return restaurant
 
@@ -173,6 +199,7 @@ class MenusSerializer(serializers.ModelSerializer):
 #Client
 
 class ClientsListSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = Client
         fields = [
@@ -181,7 +208,19 @@ class ClientsListSerializer(serializers.ModelSerializer):
             "last_name",
             "phone",
             "email",
+            "user"
             ]
+
+    def create(self, validated_data):
+        userDataId= self.validated_data.pop("user")
+        userData = User.objects.create(**userDataId)
+        validated_data.pop("user")
+        array_forms = []
+        restaurant = Client.objects.create(**validated_data)
+        restaurant.user=userData
+        restaurant.save()
+        restaurant.addresses.set(array_forms)
+        return restaurant
 
 class ClientsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -385,6 +424,7 @@ class ClientAddressListSerializer(serializers.ModelSerializer):
 
 class ClientCreateSerializer(serializers.ModelSerializer):#restaurant create
     addresses = ClientAddressesListSerializer(many=True)
+    user = UserSerializer()
     class Meta:
         model = Client
         fields = [
@@ -393,16 +433,39 @@ class ClientCreateSerializer(serializers.ModelSerializer):#restaurant create
             "phone",
             "email",
             "addresses",
+            "user",
         ]
         
+    # def create(self, validated_data):
+    #     restaurantId = self.validated_data.pop("addresses")
+    #     userDataId= self.validated_data.pop("user")
+    #     userData = User.objects.create(**userDataId)
+    #     validated_data.pop("addresses")
+    #     validated_data.pop("user")
+    #     array_forms = []
+    #     for restaurant_Id in restaurantId:
+    #       form = RestaurantAddress.objects.create(**restaurant_Id)
+    #       array_forms.append(form)
+    #     restaurant = Restaurant.objects.create(**validated_data)
+    #     restaurant.user=userData
+    #     restaurant.save()
+    #     restaurant.addresses.set(array_forms)
+    #     return restaurant
+
+
     def create(self, validated_data):
         clientId = self.validated_data.pop("addresses")
+        userDataId= self.validated_data.pop("user")
+        userData = User.objects.create(**userDataId)
         validated_data.pop("addresses")
+        validated_data.pop("user")
         array_forms = []
         for client_Id in clientId:
           form = ClientAddress.objects.create(**client_Id)
           array_forms.append(form)
         client = Client.objects.create(**validated_data)
+        client.user=userData
+        client.save()
         client.addresses.set(array_forms)
         return client
 
@@ -417,3 +480,4 @@ class ClientCreateSerializer(serializers.ModelSerializer):#restaurant create
         client = super(ClientCreateSerializer, self).update(instance, validated_data)
         client.save()
         return client
+

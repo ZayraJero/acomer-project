@@ -1,5 +1,5 @@
 #from django.shortcuts import render
-from django.http.request import HttpHeaders
+from django.contrib.auth.models import User
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http import JsonResponse
@@ -53,6 +53,8 @@ from .serializers import (
     RaitingsListSerializer,
     #menuPlate
     MenuPlateSerializer,
+    #user
+    UserSerializer
     )
 
 #RestaurantViews
@@ -79,6 +81,7 @@ class DeleteRestaurantAPIView(generics.DestroyAPIView):
 class CreateRestaurantAddressesAPIView(generics.CreateAPIView):
     queryset = MenuPlate.objects.all()
     serializer_class = RestaurantCreateSerializer
+    permission_classes = []
 
 ####
 
@@ -184,7 +187,7 @@ class CreateMenusAPIView(generics.CreateAPIView):
 class RetrieveMenusAPIView(generics.GenericAPIView):
     queryset = Menu.objects.all()
     #serializer_class = MenusDetailSerializer
-    permission_classes = []
+    #permission_classes = []
 
     def get(self,*args,**kwargs):
         print(args,kwargs)
@@ -245,6 +248,7 @@ class ListClientsAPIView(generics.ListAPIView):
 class CreateClientAPIView(generics.CreateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientsListSerializer
+    permission_classes = []
 
 class RetrieveClientsAPIView(generics.RetrieveAPIView):
     queryset = Client.objects.all()
@@ -269,6 +273,7 @@ class ClientOrdersAPIView(generics.RetrieveAPIView):
 class CreateClientAddressesAPIView(generics.CreateAPIView):
     queryset = MenuPlate.objects.all()
     serializer_class = ClientCreateSerializer
+    permission_classes = []
 
 #client address
 
@@ -336,3 +341,11 @@ class UpdateMenuPlateAPIView(generics.UpdateAPIView):
 class DeleteMenuPlateAPIView(generics.DestroyAPIView):
     queryset = MenuPlate.objects.all()
     serializer_class = MenuPlateSerializer
+
+class CreateUserAPIView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = []
+
+
+
