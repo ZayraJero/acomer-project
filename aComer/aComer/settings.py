@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'api',
     #instaled apps
     'rest_framework',
-    'rest_framework.authtoken',
+    #'rest_framework.authtoken',
     'crispy_forms',
     'corsheaders',
     'django_filters',
@@ -64,12 +64,12 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.TokenAuthentication",
-    ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-}
+# REST_FRAMEWORK = {
+#     "DEFAULT_AUTHENTICATION_CLASSES": (
+#         "rest_framework.authentication.TokenAuthentication",
+#     ),
+#     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+# }
 
 ROOT_URLCONF = 'aComer.urls'
 
