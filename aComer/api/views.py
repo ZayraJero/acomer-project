@@ -159,9 +159,7 @@ class FilterPlatesAPIView(generics.GenericAPIView):
             }
             grouped_plates[plate.type].append(plate_dict)
         response = {
-            
                 "plates":grouped_plates,
-            
         }
         print(response)
         return JsonResponse(response)
