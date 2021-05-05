@@ -145,7 +145,13 @@ class OrderListSerializer(serializers.ModelSerializer):
         order.save()
         return order
 
-
+#order status update
+class OrderUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = [
+            "status",
+        ]
 
 #order detail
 
