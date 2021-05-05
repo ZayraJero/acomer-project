@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     #'rest_framework.authtoken',
     'crispy_forms',
-    'corsheaders',
+    #'corsheaders',
     'django_filters',
 ]
 
