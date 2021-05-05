@@ -18,25 +18,7 @@ class Restaurant(models.Model):
 
 
 
-class Plate(models.Model):
-    STATUS_TYPES = (
-        ("primer_tiempo", "Primer Tiempo "),
-        ("segundo_tiempo", "Segundo Tiempo"),
-        ("tercer_tiempo", "Tercer Tiempo"),
-        ("cuarto_tiempo", "Cuarto Tiempo"),
-        ("bebidas", "Bebidas"),
-        ("Complementos", "Complementos"),
-        ("ingredientes_extras", "Ingredientes Extras"),
-        ("tacos", "Tacos"),
-        ("snack", "Snack"),
-    )
-    type = models.CharField(max_length=100, choices =STATUS_TYPES, default="primer tiempo")
-    name = models.CharField(max_length=100)
-    price = models.FloatField(max_length=10)
-    image = models.ImageField(upload_to = "plate_images")
 
-    def __str__(self) -> str:
-        return f"{self.type},{self.name}"
 
 
 
@@ -56,6 +38,28 @@ class Order(models.Model):
     def __str__(self) -> str:
         return f"{self.status}"
 
+
+class Plate(models.Model):
+    STATUS_TYPES = (
+        ("primer_tiempo", "Primer Tiempo "),
+        ("segundo_tiempo", "Segundo Tiempo"),
+        ("tercer_tiempo", "Tercer Tiempo"),
+        ("cuarto_tiempo", "Cuarto Tiempo"),
+        ("bebidas", "Bebidas"),
+        ("Complementos", "Complementos"),
+        ("ingredientes_extras", "Ingredientes Extras"),
+        ("tacos", "Tacos"),
+        ("snack", "Snack"),
+    )
+    type = models.CharField(max_length=100, choices =STATUS_TYPES, default="primer tiempo")
+    name = models.CharField(max_length=100)
+    price = models.FloatField(max_length=10)
+    image = models.ImageField(upload_to = "plate_images")
+
+    def __str__(self) -> str:
+        return f"{self.type},{self.name}"
+    #Relations
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="plates",null=True)
 
 
 class RestaurantAddress(models.Model):
@@ -84,8 +88,9 @@ class Menu(models.Model):
     image = models.ImageField(upload_to = "menu_images")
 
     #Relations
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="menus",null=True)
-
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="menus",null=True) 
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="menus",null=True)
+    
     def __str__(self) -> str:
         return f"{self.groupMenu},{self.price}"
 
@@ -93,4 +98,5 @@ class MenuPlate(models.Model):
     #Relations
     plate = models.ForeignKey(Plate, on_delete=models.CASCADE,related_name="plates",null=True)
     menu = models.ForeignKey(Menu,on_delete=models.CASCADE,related_name="plates",null=True)
-    order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name="plates",null=True)
+    #order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name="menuses",null=True)
+    

@@ -60,13 +60,139 @@ class PlateSerializer(serializers.ModelSerializer):
             ]
 
 
+#Pate
+class MenuPlateDishesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuPlate
+        fields = [
+            "plate",
+            ]
+
+class MenuOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuPlate
+        fields = [
+            "menu",
+            ]
+
+
+#Menu
+
+class MenusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = [
+            "id",
+            "title",
+            "description",
+            "price",
+            ]
+
+class MenusIdSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    class Meta:
+        model = Menu
+        fields = [
+            "id",
+            ]
+class PlatesIdSerialiser(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    class Meta:
+        model = Plate
+        fields = ["id"]
+
 #Orders
 class OrderListSerializer(serializers.ModelSerializer):
+    plates = PlatesIdSerialiser(many = True)
+    menus = MenusIdSerializer(many=True)
     class Meta:
         model = Order
-        fields = "__all__"
+        fields = [
+            "id",
+            "status",
+            "restaurant",
+            "client",
+            "plates",
+            "menus",
+        ]
+
+    def create(self, validated_data):
+        menu_id=self.validated_data.pop("menus")
+        validated_data.pop("menus")
+        plates_id=self.validated_data.pop("plates")
+        validated_data.pop("plates")
+        print("aaaaaaaaaaaaaaaaaa",validated_data)
+        order = Order.objects.create(**validated_data)
+        for new_menu in menu_id:
+            id_menu = new_menu["id"]
+            print("ssssssssssssssssss",new_menu["id"])
+            menus=list(Menu.objects.filter(id=id_menu))
+            print("++++++++++++",order)
+            menus[0].order= order
+            menus[0].save()
+            print("********************",menus[0].order)
+        new_array = []
+        for new_plates in plates_id:
+            id_plates = new_plates["id"]
+            platillos =Plate.objects.get(id=id_plates)
+            new_array.append(platillos)
+            # plates.order = order
+            # plates.save()
+            #print(plates.order)
+        order.plates.set(new_array)
+        print("°°°°°°°°°°°°°°°",order.plates)
+        print("111111111111",new_array)
+        order.save()
+        return order
 
 
+
+#order detail
+
+class MenusDetailSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    class Meta:
+        model = Menu
+        fields = [
+            "id",
+            "title"
+            ]
+class PlatesDetailSerialiser(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    class Meta:
+        model = Plate
+        fields = [
+            "id",
+            "name"
+        ]
+
+#Orders
+class OrderDetailSerializer(serializers.ModelSerializer):
+    plates = PlatesDetailSerialiser(many = True)
+    menus = MenusDetailSerializer(many=True)
+    class Meta:
+        model = Order
+        fields = [
+            "id",
+            "status",
+            "restaurant",
+            "client",
+            "plates",
+            "menus",
+        ]       
+            
+        
+
+    def update(self, instance, validated_data):
+        adresses_id = self.validated_data.pop("addresses")
+        addresses_viejo = list(RestaurantAddress.objects.filter(restaurant_id=instance.id))
+        for address in range(len(adresses_id)):
+            address_nuevo = super().update(addresses_viejo[address], adresses_id[address])
+        validated_data.pop("addresses")
+        instance = super().update(instance, validated_data)
+        restaurant = super(RestaurantCreateSerializer, self).update(instance, validated_data)
+        restaurant.save()
+        return restaurant
 
 #restaurantAddresses
 
@@ -141,8 +267,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
-    user = UserSerializer()
     addresses = RestaurantAddressesSerializer(many=True)
+    user = UserSerializer()
     class Meta:
         model = Restaurant
         fields = [
@@ -181,20 +307,6 @@ class RestaurantCreateSerializer(serializers.ModelSerializer):#restaurant create
         restaurant.save()
         return restaurant
 
-#Menu
-
-
-
-
-class MenusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Menu
-        fields = [
-            "id",
-            "title",
-            "description",
-            "price",
-            ]
 
 #Client
 
@@ -264,27 +376,7 @@ class MenuPlateSerializer(serializers.ModelSerializer):
             "order"
         ]
 
-class MenuPlateDishesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MenuPlate
-        fields = ["plate"]
-##menu un platillo
 
-# class MenusDetailSerializer(serializers.ModelSerializer):
-#     #grouped_plates = serializers.DictField()
-#     class Meta:
-#         model = Menu
-#         fields = [
-#             "title",
-#             "description",
-#             "groupMenu",
-#             "price",
-#             "restaurant",
-            
-#         ]
-
-#     def validate(self,data):
-#         print(data)
 
 class MenusListSerializer(serializers.ModelSerializer):
     #dishes = serializers.ListField(child=serializers.CharField(), allow_empty=True,)
