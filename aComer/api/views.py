@@ -41,6 +41,7 @@ from .serializers import (
     OrderListSerializer,
     OrderDetailSerializer,
     OrderUpdateSerializer,
+    OrderStatusDetailSerializer,
     # restaurant addresses
     RestaurantCreateSerializer,
     RestaurantAddressesSerializer,
@@ -206,6 +207,10 @@ class CreateOrdersAPIView(generics.CreateAPIView):
 class RetrieveOrdersAPIView(generics.RetrieveAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderDetailSerializer
+
+class RetrieveStatusOrdersAPIView(generics.RetrieveAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderStatusDetailSerializer
 
 
 class UpdateOrdersAPIView(generics.UpdateAPIView):

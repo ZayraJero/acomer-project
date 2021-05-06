@@ -210,6 +210,14 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         restaurant.save()
         return restaurant
 
+class OrderStatusDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = [
+            "id",
+            "status",
+        ]
+
 #restaurantAddresses
 
 

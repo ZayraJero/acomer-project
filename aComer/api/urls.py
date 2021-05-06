@@ -23,6 +23,7 @@ from .views import (
     ListOrdersAPIView,
     CreateOrdersAPIView,
     RetrieveOrdersAPIView,
+    RetrieveStatusOrdersAPIView,
     UpdateOrdersAPIView,
     DeleteOrdersAPIView,
     #restaurant addreses
@@ -97,6 +98,7 @@ urlpatterns=[
     path("order/",ListOrdersAPIView.as_view(),name="list-plate"),
     path("order/create/",CreateOrdersAPIView.as_view(),name="create-plate"),
     path("order/<int:pk>/detail/",RetrieveOrdersAPIView.as_view(),name="detail-plate"),
+    path("order/<int:pk>/status/",RetrieveStatusOrdersAPIView.as_view(),name="detail-plate"),
     path("order/<int:pk>/update/",UpdateOrdersAPIView.as_view(),name="update-plate"),
     path("order/<int:pk>/delete/",DeleteOrdersAPIView.as_view(),name="delete-plate"),
     #restaurantaddres
