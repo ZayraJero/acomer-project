@@ -14,7 +14,7 @@ class Restaurant(models.Model):
     def __str__(self) -> str:
         return f"{self.name}"
     #relations
-    user =models.OneToOneField(User, on_delete=models.CASCADE,blank=True,null=True)
+    user =models.OneToOneField(User, on_delete=models.CASCADE,blank=True,null=True,related_name="restaurants")
 
 
 
