@@ -534,6 +534,7 @@ class ClientAddressListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = [
+            "id"
             "first_name",
             "last_name",
             "phone",

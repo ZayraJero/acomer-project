@@ -356,7 +356,33 @@ class ClientAddressAPIView(generics.RetrieveAPIView):
 
 class ClientOrdersAPIView(generics.RetrieveAPIView):
     queryset = Client.objects.all()
-    serializer_class = ClientAddressListSerializer
+    #serializer_class = ClientAddressListSerializer
+    def get(self, *args, **kwargs):
+        print(args, kwargs)
+        client = self.queryset.get(id=kwargs["pk"])
+        print(client.__dict__)
+        client_orders = []
+        orders = list(client.orders.all().values_list(flat=True))
+        retrieved_orders = Order.objects.filter(id__in=orders)
+        for order in retrieved_orders:
+            order_dict = {
+                "id": order.id,
+                "status": order.status,
+                #"restaurant": order.restaurant
+                #"image":plate.image,
+            }
+            client_orders.append(order_dict)
+        response = {
+            "client": {
+                "first name": client.first_name,
+                "phone": client.phone,
+                "email": client.email,
+                # "image":menu.image,
+                "orders": client_orders,
+            }
+        }
+        print(response)
+        return JsonResponse(response)
 
 
 class CreateClientAddressesAPIView(generics.CreateAPIView):

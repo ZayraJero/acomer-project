@@ -99,4 +99,4 @@ class MenuPlate(models.Model):
     plate = models.ForeignKey(Plate, on_delete=models.CASCADE,related_name="plates",null=True)
     menu = models.ForeignKey(Menu,on_delete=models.CASCADE,related_name="plates",null=True)
     #order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name="menuses",null=True)
-    
+
