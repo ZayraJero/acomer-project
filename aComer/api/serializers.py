@@ -214,7 +214,6 @@ class OrderStatusDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
-            "id",
             "status",
         ]
 
