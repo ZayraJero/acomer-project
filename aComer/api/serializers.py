@@ -179,7 +179,9 @@ class PlatesDetailSerialiser(serializers.ModelSerializer):
         model = Plate
         fields = [
             "id",
+            "type",
             "name"
+            
         ]
 
 #Orders
