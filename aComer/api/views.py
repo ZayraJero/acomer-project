@@ -368,8 +368,6 @@ class ClientOrdersAPIView(generics.RetrieveAPIView):
             order_dict = {
                 "id": order.id,
                 "status": order.status,
-                #"restaurant": order.restaurant
-                #"image":plate.image,
             }
             client_orders.append(order_dict)
         response = {
@@ -377,7 +375,6 @@ class ClientOrdersAPIView(generics.RetrieveAPIView):
                 "first name": client.first_name,
                 "phone": client.phone,
                 "email": client.email,
-                # "image":menu.image,
                 "orders": client_orders,
             }
         }
